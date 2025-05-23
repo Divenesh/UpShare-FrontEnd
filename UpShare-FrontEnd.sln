@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "upshare", "upshare\upshare.csproj", "{889CFB27-2767-ADC9-AF6A-2DB658C06225}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{889CFB27-2767-ADC9-AF6A-2DB658C06225}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{889CFB27-2767-ADC9-AF6A-2DB658C06225}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{889CFB27-2767-ADC9-AF6A-2DB658C06225}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{889CFB27-2767-ADC9-AF6A-2DB658C06225}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1CBB20B7-7D3D-4A60-9CB5-4AFA122B3496}
+	EndGlobalSection
+EndGlobal
