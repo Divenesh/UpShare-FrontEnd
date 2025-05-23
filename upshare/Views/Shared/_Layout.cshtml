@@ -1,21 +1,39 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - upshare</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search" />
     <link rel="stylesheet" href="~/upshare.styles.css" asp-append-version="true" />
 </head>
+
 <body>
     <header>
-<nav class="navbar navbar-light bg-light px-3 mb-3">
-  <a class="navbar-brand" href="#">
-    <img src="/docs/4.3/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-    Bootstrap
-  </a>
-</nav>
+        <nav class="navbar navbar-light px-5 mb-5">
+            <a class="navbar-brand" href="#">
+                <img src="/assets/images/upShareNoBackground.png" width="150" height="70"
+                    class="d-inline-block align-top" alt="logo">
+            </a>
+            <div class="ms-auto d-flex align-items-center"></div>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <span class="me-3">Welcome, @User.Identity.Name!</span>
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button type="submit" class="btn btn-link text-dark">Logout</button>
+                    </form>
+                }
+                else
+                {
+                    <a class="btn btn-outline-primary me-2" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                }
+            </div>
+            
+        </nav>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
@@ -33,4 +51,5 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>
