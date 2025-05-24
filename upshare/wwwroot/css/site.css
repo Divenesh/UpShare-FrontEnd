@@ -34,7 +34,7 @@ body {
   align-items: center;
   padding: 10px;
   border-radius: 100%;
-  background-color: #406F4D ;
+  background-color: #406f4d;
 }
 
 .category-btn .row {
@@ -43,4 +43,31 @@ body {
 
 .material-symbols-outlined {
   font-size: 24px;
+}
+
+.product-card {
+  transition: transform 0.3s, box-shadow 0.3s;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.product-card .card-img-top {
+  height: 180px;
+  object-fit: cover;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: none;
+}
+
+.carousel-indicators button {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
 }
