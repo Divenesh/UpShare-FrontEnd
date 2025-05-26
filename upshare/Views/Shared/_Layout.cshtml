@@ -13,26 +13,39 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-light px-5 mb-5">
-            <a class="navbar-brand" href="#">
-                <img src="/assets/images/upShareNoBackground.png" width="150" height="70"
-                    class="d-inline-block align-top" alt="logo">
-            </a>
-            <div class="ms-auto d-flex align-items-center"></div>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <span class="me-3">Welcome, @User.Identity.Name!</span>
-                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                        <button type="submit" class="btn btn-link text-dark">Logout</button>
-                    </form>
-                }
-                else
-                {
-                    <a class="btn btn-outline-primary me-2" asp-area="Identity" asp-page="/Account/Login">Login</a>
-                    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Register</a>
-                }
+        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm px-4 py-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">
+                    <img src="/assets/images/upShareNoBackground.png" width="150" height="70"
+                        class="d-inline-block align-top" alt="logo">
+                </a>
+                <div class="ms-auto d-flex align-items-center">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <span class="me-3 text-success fw-semibold">Welcome, @User.Identity.Name!</span>
+                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
+                            asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <button type="submit" class="btn btn-outline-success">
+                                <span class="material-symbols-outlined align-middle me-1"
+                                    style="font-size: 18px;">logout</span>
+                                Logout
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a class="btn btn-outline-success me-2" asp-area="Identity" asp-page="/Account/Login">
+                            <span class="material-symbols-outlined align-middle me-1" style="font-size: 18px;">login</span>
+                            Login
+                        </a>
+                        <a class="btn btn-success" asp-area="Identity" asp-page="/Account/Register">
+                            <span class="material-symbols-outlined align-middle me-1"
+                                style="font-size: 18px;">person_add</span>
+                            Register
+                        </a>
+                    }
+                </div>
             </div>
-            
         </nav>
     </header>
     <div class="container">
@@ -40,12 +53,6 @@
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - upshare - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
