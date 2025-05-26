@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc;
 using upshare.Models;
 
@@ -13,10 +14,26 @@ public class HomeController : Controller
         _logger = logger;
     }
 
-    public IActionResult Index()
+// In your HomeController
+public async Task<IActionResult> Index()
+{
+    try
     {
-        return View();
+        var items = await GetDataFromBackend.getAllData();
+        //     foreach (var item in items)
+        //     {
+        //         // Ensure all properties are initialized
+        //     Console.WriteLine($"ID: {item.id}, Name: {item.name}, Seller ID: {item.sellerId}, Date Added: {item.dateAdded}, Price: {item.price}, Image URL: {item.imageUrl}, Category: {item.category}, Stock: {item.stock}");
+        // }
+        return View(items);
+        
     }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Controller error: {ex.Message}");
+        return View(new List<GetDataFromBackend>());
+    }
+}
 
     public IActionResult Privacy()
     {
