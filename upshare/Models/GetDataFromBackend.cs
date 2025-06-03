@@ -10,10 +10,10 @@ public class GetDataFromBackend
     public string sellerId { get; set; }
     public string dateAdded { get; set; }
     public double price { get; set; }
-    
+
     [JsonPropertyName("imageLocation")]
     public string imageUrl { get; set; }
-    
+
     public string category { get; set; }
     public int stock { get; set; }
 
@@ -38,19 +38,19 @@ public class GetDataFromBackend
     public static async Task<List<GetDataFromBackend>> getAllData()
     {
         const string locationUrl = "http://localhost:5000/home";
-        
+
         using (HttpClient client = new HttpClient())
         {
             try
             {
                 HttpResponseMessage response = await client.GetAsync(locationUrl);
-                
+
                 if (response.IsSuccessStatusCode)
                 {
                     string jsonResponse = await response.Content.ReadAsStringAsync();
-                    
+
                     List<GetDataFromBackend>? dataList = JsonSerializer.Deserialize<List<GetDataFromBackend>>(jsonResponse, _jsonOptions);
-                    
+
                     return dataList ?? new List<GetDataFromBackend>();
                 }
                 else
@@ -67,7 +67,38 @@ public class GetDataFromBackend
         }
     }
 
-    // Optional: Method to get a single item by index
+    public static async Task<List<GetDataFromBackend>> getCategoryData(string category)
+    {
+        string locationUrl = $"http://localhost:5000/home/{category}";
+
+        using (HttpClient client = new HttpClient())
+        {
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(locationUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+
+                    List<GetDataFromBackend>? dataList = JsonSerializer.Deserialize<List<GetDataFromBackend>>(jsonResponse, _jsonOptions);
+
+                    return dataList ?? new List<GetDataFromBackend>();
+                }
+                else
+                {
+                    Console.WriteLine($"API Error: {response.StatusCode}");
+                    return new List<GetDataFromBackend>();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching category data: {ex.Message}");
+                return new List<GetDataFromBackend>();
+            }
+        }
+    }
+
     public static async Task<GetDataFromBackend> getFirstItem()
     {
         var items = await getAllData();
