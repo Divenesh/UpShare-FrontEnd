@@ -27,64 +27,79 @@
     <div class="container text-center mt-5">
         <div class="row justify-content-center mb-3">
             <div class="col-auto">
-                <button type="button" class="btn btn-success category-btn mx-2">
-                    <div class="row">
-                        <div class="col-12">
-                            <span class="material-symbols-outlined">hiking</span>
+                <form asp-action="Categories" asp-controller="Home" method="get" style="display: inline;">
+                    <input type="hidden" name="category" value="sports" />
+                    <button type="submit" class="btn btn-success category-btn mx-2">
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="material-symbols-outlined">hiking</span>
+                            </div>
+                            <div class="col-12">
+                                <span>Sports</span>
+                            </div>
                         </div>
-                        <div class="col-12">
-                            <span>Sports</span>
-                        </div>
-                    </div>
-                </button>
+                    </button>
+                </form>
             </div>
             <div class="col-auto">
-                <button type="button" class="btn btn-success category-btn mx-2">
-                    <div class="row">
-                        <div class="col-12">
-                            <span class="material-symbols-outlined">apparel</span>
+                <form asp-action="Categories" asp-controller="Home" method="get" style="display: inline;">
+                    <input type="hidden" name="category" value="clothing" />
+                    <button type="submit" class="btn btn-success category-btn mx-2">
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="material-symbols-outlined">apparel</span>
+                            </div>
+                            <div class="col-12">
+                                <span>Clothings</span>
+                            </div>
                         </div>
-                        <div class="col-12">
-                            <span>Clothings</span>
-                        </div>
-                    </div>
-                </button>
+                    </button>
+                </form>
             </div>
             <div class="col-auto">
-                <button type="button" class="btn btn-success category-btn mx-2">
-                    <div class="row">
-                        <div class="col-12">
-                            <span class="material-symbols-outlined">pending</span>
+                <form asp-action="Categories" asp-controller="Home" method="get" style="display: inline;">
+                    <input type="hidden" name="category"/>
+                    <button type="submit" class="btn btn-success category-btn mx-2">
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="material-symbols-outlined">pending</span>
+                            </div>
+                            <div class="col-12">
+                                <span>More</span>
+                            </div>
                         </div>
-                        <div class="col-12">
-                            <span>More</span>
-                        </div>
-                    </div>
-                </button>
+                    </button>
+                </form>
             </div>
             <div class="col-auto">
-                <button type="button" class="btn btn-success category-btn mx-2">
-                    <div class="row">
-                        <div class="col-12">
-                            <span class="material-symbols-outlined">handyman</span>
+                <form asp-action="Categories" asp-controller="Home" method="get" style="display: inline;">
+                    <input type="hidden" name="category" value="tools" />
+                    <button type="submit" class="btn btn-success category-btn mx-2">
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="material-symbols-outlined">handyman</span>
+                            </div>
+                            <div class="col-12">
+                                <span>Tools</span>
+                            </div>
                         </div>
-                        <div class="col-12">
-                            <span>Tools</span>
-                        </div>
-                    </div>
-                </button>
+                    </button>
+                </form>
             </div>
             <div class="col-auto">
-                <button type="button" class="btn btn-success category-btn mx-2">
-                    <div class="row">
-                        <div class="col-12">
-                            <span class="material-symbols-outlined">smartphone</span>
+                <form asp-action="Categories" asp-controller="Home" method="get" style="display: inline;">
+                    <input type="hidden" name="category" value="gadgets" />
+                    <button type="submit" class="btn btn-success category-btn mx-2">
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="material-symbols-outlined">smartphone</span>
+                            </div>
+                            <div class="col-12">
+                                <span>Gadgets</span>
+                            </div>
                         </div>
-                        <div class="col-12">
-                            <span>Gadgets</span>
-                        </div>
-                    </div>
-                </button>
+                    </button>
+                </form>
             </div>
         </div>
     </div>

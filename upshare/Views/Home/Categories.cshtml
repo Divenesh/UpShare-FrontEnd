@@ -1,0 +1,27 @@
+﻿@model List<GetDataFromBackend>
+
+@{
+    ViewData["Title"] = "Categories";
+    ViewData["Description"] = "Explore various categories of content available on our platform.";
+    ViewData["Keywords"] = "categories, content, explore, topics";
+}
+
+<div>
+    <h1>Categories</h1>
+    <p>Explore a wide range of categories to find content that interests you.</p>
+
+    <div class="categories"></div>
+        @foreach (var category in Model)
+        {
+            <div class="category">
+                <h2>@category.name</h2>
+                <p>Seller ID: @category.sellerId</p>
+                <p>Date Added: @category.dateAdded</p>
+                <p>Price: @category.price</p>
+                <img src="@category.imageUrl" alt="@category.name" />
+                <p>Category: @category.category</p>
+                <p>Stock: @category.stock</p>
+            </div>
+        }
+    </div>
+</div>
