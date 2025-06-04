@@ -25,30 +25,37 @@ public class HomeController : Controller
         return View();
     }
 
-public async Task<IActionResult> Categories(string category = "")
-{
-    try
+    public async Task<IActionResult> Categories(string category = "")
     {
-        List<GetDataFromBackend> items;
-        
-        if (!string.IsNullOrEmpty(category))
+        try
         {
-            items = await GetDataFromBackend.getCategoryData(category);
+            List<GetItemsFromBackend> items;
+
+            if (!string.IsNullOrEmpty(category))
+            {
+                items = await GetItemsFromBackend.getCategoryData(category);
+            }
+            else
+            {
+                items = await GetItemsFromBackend.getAllData();
+            }
+
+            ViewBag.SelectedCategory = category;
+            return View(items);
         }
-        else
+        catch (Exception ex)
         {
-            items = await GetDataFromBackend.getAllData();
+            Console.WriteLine($"Controller error: {ex.Message}");
+            return View(new List<GetItemsFromBackend>());
         }
-        
-        ViewBag.SelectedCategory = category;
-        return View(items);
     }
-    catch (Exception ex)
+
+    public IActionResult ItemDetails()
     {
-        Console.WriteLine($"Controller error: {ex.Message}");
-        return View(new List<GetDataFromBackend>());
+        return View();
     }
-}
+
+
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

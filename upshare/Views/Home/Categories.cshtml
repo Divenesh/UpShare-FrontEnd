@@ -1,4 +1,4 @@
-﻿@model List<GetDataFromBackend>
+﻿@model List<GetItemsFromBackend>
 
 @{
     var categoryName = Model != null && Model.Any() ? Model.First().category : "Categories";
@@ -45,8 +45,10 @@
                                 </span>
                             </div>
                             <p class="card-text small text-muted mb-3">Added on @DateTime.Parse(item.dateAdded).ToString("MMM dd, yyyy")</p>
-                            <a href="@Url.Action("Details", "Home", new { id = item.id })" 
-                               class="btn btn-outline-success w-100">View Details</a>
+                            <form asp-action="ItemDetails" asp-controller="Home" method="get">
+                                <input type="hidden" name="id" value="@item.id" />
+                                <button type="submit" class="btn btn-outline-success w-100">View Details</button>
+                            </form>
                         </div>
                     </div>
                 </div>
