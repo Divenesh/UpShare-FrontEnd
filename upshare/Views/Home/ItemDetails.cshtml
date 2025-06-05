@@ -1,0 +1,74 @@
+﻿@model upshare.Models.ItemDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Item?.name ?? "Product Details";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        @if (Model.Item != null)
+        {
+            <div class="col-md-6">
+                <img src="@Model.Item.imageLocation" class="img-fluid rounded" alt="@Model.Item.name">
+            </div>
+            <div class="col-md-6">
+                <h1 class="mb-3">@Model.Item.name</h1>
+                <h3 class="text-success mb-4">$@Model.Item.price.ToString("0.00")</h3>
+                
+                <div class="mb-4">
+                    <h5>Product Specifications</h5>
+                    <ul class="list-group">
+                        @foreach (var spec in Model.Specifications)
+                        {
+                            <li class="list-group-item">@spec.details</li>
+                        }
+                    </ul>
+                </div>
+                
+                <div class="mb-4">
+                    <h5>Seller Information</h5>
+                    @if (Model.Sellers.Any())
+                    {
+                        var seller = Model.Sellers.First();
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">@seller.sellername</h6>
+                                <p class="card-text small">@seller.address</p>
+                                <p class="card-text small">Contact: @seller.contactnum</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <button class="btn btn-success" type="button">Rent Now</button>
+                    <button class="btn btn-outline-success" type="button">Add to Wishlist</button>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="col-12 text-center">
+                <h3>Product not found</h3>
+                <a href="@Url.Action("Index", "Home")" class="btn btn-success mt-3">Return to Home</a>
+            </div>
+        }
+    </div>
+    
+    @if (Model.Ratings.Any())
+    {
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="mb-4">Customer Reviews</h3>
+                <div class="list-group">
+                    @foreach (var rating in Model.Ratings)
+                    {
+                        <div class="list-group-item list-group-item-action">
+                            <p class="mb-1">@rating.description</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

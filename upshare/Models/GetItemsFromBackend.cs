@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace upshare.Models;
 
-public class GetDataFromBackend
+public class GetItemsFromBackend
 {
     public string id { get; set; }
     public string name { get; set; }
@@ -17,7 +17,7 @@ public class GetDataFromBackend
     public string category { get; set; }
     public int stock { get; set; }
 
-    public GetDataFromBackend()
+    public GetItemsFromBackend()
     {
         id = string.Empty;
         name = string.Empty;
@@ -35,7 +35,7 @@ public class GetDataFromBackend
     };
 
     // Updated method to return a list since API returns an array
-    public static async Task<List<GetDataFromBackend>> getAllData()
+    public static async Task<List<GetItemsFromBackend>> getAllData()
     {
         const string locationUrl = "http://localhost:5000/home";
 
@@ -49,25 +49,25 @@ public class GetDataFromBackend
                 {
                     string jsonResponse = await response.Content.ReadAsStringAsync();
 
-                    List<GetDataFromBackend>? dataList = JsonSerializer.Deserialize<List<GetDataFromBackend>>(jsonResponse, _jsonOptions);
+                    List<GetItemsFromBackend>? dataList = JsonSerializer.Deserialize<List<GetItemsFromBackend>>(jsonResponse, _jsonOptions);
 
-                    return dataList ?? new List<GetDataFromBackend>();
+                    return dataList ?? new List<GetItemsFromBackend>();
                 }
                 else
                 {
                     Console.WriteLine($"API Error: {response.StatusCode}");
-                    return new List<GetDataFromBackend>();
+                    return new List<GetItemsFromBackend>();
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error fetching data: {ex.Message}");
-                return new List<GetDataFromBackend>();
+                return new List<GetItemsFromBackend>();
             }
         }
     }
 
-    public static async Task<List<GetDataFromBackend>> getCategoryData(string category)
+    public static async Task<List<GetItemsFromBackend>> getCategoryData(string category)
     {
         string locationUrl = $"http://localhost:5000/home/{category}";
 
@@ -81,27 +81,24 @@ public class GetDataFromBackend
                 {
                     string jsonResponse = await response.Content.ReadAsStringAsync();
 
-                    List<GetDataFromBackend>? dataList = JsonSerializer.Deserialize<List<GetDataFromBackend>>(jsonResponse, _jsonOptions);
+                    List<GetItemsFromBackend>? dataList = JsonSerializer.Deserialize<List<GetItemsFromBackend>>(jsonResponse, _jsonOptions);
 
-                    return dataList ?? new List<GetDataFromBackend>();
+                    return dataList ?? new List<GetItemsFromBackend>();
                 }
                 else
                 {
                     Console.WriteLine($"API Error: {response.StatusCode}");
-                    return new List<GetDataFromBackend>();
+                    return new List<GetItemsFromBackend>();
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error fetching category data: {ex.Message}");
-                return new List<GetDataFromBackend>();
+                return new List<GetItemsFromBackend>();
             }
         }
     }
 
-    public static async Task<GetDataFromBackend> getFirstItem()
-    {
-        var items = await getAllData();
-        return items.FirstOrDefault() ?? new GetDataFromBackend();
-    }
+   
+
 }

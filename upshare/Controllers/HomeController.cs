@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using System.Linq.Expressions;
+
 using Microsoft.AspNetCore.Mvc;
 using upshare.Models;
 
@@ -25,28 +25,53 @@ public class HomeController : Controller
         return View();
     }
 
-public async Task<IActionResult> Categories(string category = "")
+    public async Task<IActionResult> Categories(string category = "")
+    {
+        try
+        {
+            List<GetItemsFromBackend> items;
+
+            if (!string.IsNullOrEmpty(category))
+            {
+                items = await GetItemsFromBackend.getCategoryData(category);
+            }
+            else
+            {
+                items = await GetItemsFromBackend.getAllData();
+            }
+
+            ViewBag.SelectedCategory = category;
+            return View(items);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Controller error: {ex.Message}");
+            return View(new List<GetItemsFromBackend>());
+        }
+    }
+
+public async Task<IActionResult> ItemDetails(string id)
 {
     try
     {
-        List<GetDataFromBackend> items;
-        
-        if (!string.IsNullOrEmpty(category))
+        if (string.IsNullOrEmpty(id))
         {
-            items = await GetDataFromBackend.getCategoryData(category);
+            return RedirectToAction("Index");
         }
-        else
+
+        var itemDetails = await ItemDetailsViewModel.GetItemById(id);
+        
+        if (itemDetails.Item == null)
         {
-            items = await GetDataFromBackend.getAllData();
+            return NotFound();
         }
         
-        ViewBag.SelectedCategory = category;
-        return View(items);
+        return View(itemDetails);
     }
     catch (Exception ex)
     {
         Console.WriteLine($"Controller error: {ex.Message}");
-        return View(new List<GetDataFromBackend>());
+        return View(new ItemDetailsViewModel());
     }
 }
 
