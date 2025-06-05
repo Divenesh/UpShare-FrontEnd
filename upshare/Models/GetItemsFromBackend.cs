@@ -99,36 +99,6 @@ public class GetItemsFromBackend
         }
     }
 
-    public static async Task<GetItemsFromBackend> getItemById(string id)
-    {
-        string locationUrl = $"http://localhost:5000/home/{id}";
-
-        using (HttpClient client = new HttpClient())
-        {
-            try
-            {
-                HttpResponseMessage response = await client.GetAsync(locationUrl);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    string jsonResponse = await response.Content.ReadAsStringAsync();
-
-                    GetItemsFromBackend? item = JsonSerializer.Deserialize<GetItemsFromBackend>(jsonResponse, _jsonOptions);
-
-                    return item ?? new GetItemsFromBackend();
-                }
-                else
-                {
-                    Console.WriteLine($"API Error: {response.StatusCode}");
-                    return new GetItemsFromBackend();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error fetching item by ID: {ex.Message}");
-                return new GetItemsFromBackend();
-            }
-        }
-    }
+   
 
 }

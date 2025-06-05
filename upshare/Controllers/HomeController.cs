@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using System.Linq.Expressions;
+
 using Microsoft.AspNetCore.Mvc;
 using upshare.Models;
 
@@ -50,12 +50,30 @@ public class HomeController : Controller
         }
     }
 
-    public IActionResult ItemDetails()
+public async Task<IActionResult> ItemDetails(string id)
+{
+    try
     {
-        return View();
+        if (string.IsNullOrEmpty(id))
+        {
+            return RedirectToAction("Index");
+        }
+
+        var itemDetails = await ItemDetailsViewModel.GetItemById(id);
+        
+        if (itemDetails.Item == null)
+        {
+            return NotFound();
+        }
+        
+        return View(itemDetails);
     }
-
-
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Controller error: {ex.Message}");
+        return View(new ItemDetailsViewModel());
+    }
+}
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
