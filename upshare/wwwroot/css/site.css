@@ -239,3 +239,68 @@ h6 {
 .btn-outline-success:hover {
   color: white;
 }
+
+
+  .login-section {
+    background-color: #f8f9fa;
+    background-image: linear-gradient(135deg, rgba(25, 135, 84, 0.05) 0%, rgba(255, 255, 255, 0.6) 100%);
+  }
+  
+  .card {
+    border-radius: 15px;
+    transition: all 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(25, 135, 84, 0.1) !important;
+  }
+  
+  .form-control:focus {
+    border-color: #198754;
+    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+  }
+  
+  .btn-success {
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(25, 135, 84, 0.2);
+  }
+  
+  .btn-outline-success {
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-outline-success:hover {
+    transform: translateY(-2px);
+  }
+  
+  .divider {
+    font-size: 0.8rem;
+  }
+  
+  .animation-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0% {
+      transform: translatey(0px);
+    }
+    50% {
+      transform: translatey(-20px);
+    }
+    100% {
+      transform: translatey(0px);
+    }
+  }
+  
+  .rounded-4 {
+    border-radius: 1rem;
+  }
