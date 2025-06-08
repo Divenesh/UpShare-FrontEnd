@@ -19,54 +19,61 @@
           <p class="text-muted">Join our community and start sharing today!</p>
         </div>
       </div>
-<div class="col-md-6 col-lg-5 col-xl-4"> <!-- Reduced column width -->
-  <div class="card border-0 shadow-sm rounded-4 p-4"> <!-- Reduced padding from p-5 to p-4 -->
-    <div class="card-body py-2"> <!-- Added py-2 to reduce vertical padding -->
-      <h3 class="text-center fw-bold mb-3 text-success">Welcome Back</h3> <!-- Changed h2 to h3, reduced margin -->
-      <form>
-        <!-- Email input -->
-        <div class="form-floating mb-3"> <!-- Reduced margin-bottom -->
-          <input type="email" id="emailInput" class="form-control form-control-lg border-success border-opacity-25" placeholder="Email address" />
-          <label for="emailInput">Email address</label>
-        </div>
+<div class="col-md-6 col-lg-5 col-xl-4"> 
+  <div class="card border-0 shadow-sm rounded-4 p-4">
+    <div class="card-body py-2"> 
+      <h3 class="text-center fw-bold mb-3 text-success">Welcome Back</h3> 
+<form asp-action="SignIn" asp-controller="Login" method="post">
+    <!-- Add anti-forgery token for security -->
+    @Html.AntiForgeryToken()
+    
+    <div class="form-floating mb-3"> 
+      <input type="email" id="emailInput" name="Email" class="form-control form-control-lg border-success border-opacity-25" placeholder="Email address" required />
+      <label for="emailInput">Email address</label>
+      @if (ViewData.ModelState["Email"]?.Errors.Count > 0)
+      {
+          <span class="text-danger">@ViewData.ModelState["Email"].Errors.First().ErrorMessage</span>
+      }
+    </div>
 
-        <!-- Password input -->
-        <div class="form-floating mb-3"> <!-- Reduced margin-bottom -->
-          <input type="password" id="passwordInput" class="form-control form-control-lg border-success border-opacity-25" placeholder="Password" />
-          <label for="passwordInput">Password</label>
-        </div>
+    <div class="form-floating mb-3"> 
+      <input type="password" id="passwordInput" name="Password" class="form-control form-control-lg border-success border-opacity-25" placeholder="Password" required />
+      <label for="passwordInput">Password</label>
+      @if (ViewData.ModelState["Password"]?.Errors.Count > 0)
+      {
+          <span class="text-danger">@ViewData.ModelState["Password"].Errors.First().ErrorMessage</span>
+      }
+    </div>
 
-        <div class="d-flex justify-content-between align-items-center mb-3"> <!-- Reduced margin-bottom -->
-          <!-- Checkbox -->
-          <div class="form-check">
-            <input class="form-check-input border-success" type="checkbox" value="" id="rememberMe" checked />
-            <label class="form-check-label small" for="rememberMe">Remember me</label> <!-- Added small class -->
-          </div>
-          <a href="#!" class="text-success small">Forgot password?</a> <!-- Added small class -->
-        </div>
+    <div class="d-flex justify-content-between align-items-center mb-3"> 
+      <div class="form-check">
+        <input class="form-check-input border-success" type="checkbox" name="RememberMe" id="rememberMe" checked />
+        <label class="form-check-label small" for="rememberMe">Remember me</label> 
+      </div>
+      <a href="#!" class="text-success small">Forgot password?</a> 
+    </div>
 
-        <!-- Submit button -->
-        <button type="submit" class="btn btn-success btn-lg w-100 mb-3"> <!-- Reduced margin-bottom -->
-          <span class="material-symbols-outlined align-middle me-2">login</span>
-          Sign in
-        </button>
+    <button type="submit" class="btn btn-success btn-lg w-100 mb-3">
+      <span class="material-symbols-outlined align-middle me-2">login</span>
+      Sign in
+    </button>
 
-        <div class="text-center mb-2 small"> <!-- Reduced margin, added small class -->
+        <div class="text-center mb-2 small"> 
           <span class="text-muted">Don't have an account?</span>
           <a href="#" class="text-success ms-2">Sign up</a>
         </div>
 
-        <div class="divider d-flex align-items-center my-3 position-relative"> <!-- Reduced margins -->
+        <div class="divider d-flex align-items-center my-3 position-relative">
           <hr class="flex-grow-1 border-success border-opacity-25">
-          <span class="px-2 text-muted small">OR CONTINUE WITH</span> <!-- Reduced padding -->
+          <span class="px-2 text-muted small">OR CONTINUE WITH</span> 
           <hr class="flex-grow-1 border-success border-opacity-25">
         </div>
 
         <div class="d-flex gap-2">
-          <a class="btn btn-outline-success btn-sm flex-grow-1" href="#!" role="button"> <!-- Added btn-sm -->
+          <a class="btn btn-outline-success btn-sm flex-grow-1" href="#!" role="button">
             <i class="fab fa-google me-2"></i>Google
           </a>
-          <a class="btn btn-outline-success btn-sm flex-grow-1" href="#!" role="button"> <!-- Added btn-sm -->
+          <a class="btn btn-outline-success btn-sm flex-grow-1" href="#!" role="button"> 
             <i class="fab fa-facebook-f me-2"></i>Facebook
           </a>
         </div>
