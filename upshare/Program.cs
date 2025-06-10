@@ -1,15 +1,45 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Supabase;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Register Supabase client
+builder.Services.AddScoped<Supabase.Client>(provider =>
+{
+    var supabaseUrl = builder.Configuration["Supabase:Url"];
+    var supabaseKey = builder.Configuration["Supabase:Key"];
+    
+    if (string.IsNullOrEmpty(supabaseUrl) || string.IsNullOrEmpty(supabaseKey))
+    {
+        throw new InvalidOperationException("Supabase URL and Key must be configured");
+    }
+    
+    var options = new Supabase.SupabaseOptions
+    {
+        AutoRefreshToken = true,
+        AutoConnectRealtime = true
+    };
+    
+    return new Supabase.Client(supabaseUrl, supabaseKey, options);
+});
+
+// Add authentication services
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Login/Auth";
+        options.LogoutPath = "/Login/Logout";
+        options.ExpireTimeSpan = TimeSpan.FromDays(7);
+    });
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -18,6 +48,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// Add authentication middleware (order matters!)
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
