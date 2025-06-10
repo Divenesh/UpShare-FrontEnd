@@ -8,8 +8,6 @@ namespace upshare.Models
     {
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
-        
-        // Optional properties to store in your Supabase user profile
         public string Username { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;
         
@@ -26,6 +24,7 @@ namespace upshare.Models
             try
             {
                 var session = await _supabaseClient.Auth.SignIn(email, password);
+                Console.WriteLine($"User signed in: {session.User?.Email}");
                 return session;
             }
             catch (Exception ex)
@@ -35,27 +34,7 @@ namespace upshare.Models
             }
         }
         
-        // Get user profile data if needed
-        public async Task<UserModel> GetUserProfileAsync(string userId)
-        {
-            try
-            {
-                // Query your user profiles table to get additional data
-                var user = await _supabaseClient
-                    .From<UserModel>()
-                    .Where(x => x.Id == userId)
-                    .Single();
-                    
-                return user;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error fetching user profile: {ex.Message}");
-                return null;
-            }
-        }
-        
-        // Handle sign up
+
         public async Task<Session> SignUpAsync(string email, string password)
         {
             try
