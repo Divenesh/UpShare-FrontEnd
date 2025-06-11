@@ -76,19 +76,18 @@ public async Task<IActionResult> SignIn(LoginViewModel model)
     }
     Console.WriteLine("Error in model state or authentication failed.");
     
-    // Return to login page with errors
     return View("Auth", model);
 }
         
         public async Task<IActionResult> Logout()
         {
+
+            Console.WriteLine("Logging out user...");
             try
             {
-                // Sign out from Supabase
                 var authModel = new AuthModel(_supabaseClient);
                 await authModel.SignOutAsync();
                 
-                // Sign out from cookie authentication
                 await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             }
             catch (Exception ex)

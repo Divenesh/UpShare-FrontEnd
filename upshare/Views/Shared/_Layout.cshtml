@@ -25,8 +25,7 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <span class="me-3 text-success fw-semibold">Welcome, @User.Identity.Name!</span>
-                            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
-                                asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <form asp-action="Logout" asp-controller="Login" method="post" class="d-inline">
                                 <button type="submit" class="btn btn-outline-success">
                                     <span class="material-symbols-outlined align-middle me-1"
                                         style="font-size: 18px;">logout</span>
