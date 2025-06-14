@@ -58,12 +58,11 @@
                 Sign in
               </button>
 
-              <!-- Display general validation errors -->
               <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
               <div class="text-center mb-2 small">
                 <span class="text-muted">Don't have an account?</span>
-                <a href="#" class="text-success ms-2">Sign up</a>
+                <a asp-action="SignUp" asp-controller="Login" class="text-success ms-2">Sign up</a>
               </div>
 
             </form>

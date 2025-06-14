@@ -1,0 +1,51 @@
+﻿@model upshare.Models.SignUpViewModel
+@{
+  ViewData["Title"] = "Sign Up";
+  ViewData["HideNavbar"] = true;
+  ViewData["FullWidth"] = true;
+}
+
+<section class="vh-100 login-section">
+  <div class="container-fluid py-5 h-100">
+    <div class="row d-flex align-items-center justify-content-center h-100">
+      <!-- Left side content remains the same -->
+      <!-- ... -->
+      
+      <div class="col-md-6 col-lg-5 col-xl-4">
+        <div class="card border-0 shadow-sm rounded-4 p-4">
+          <div class="card-body py-2">
+            <h3 class="text-center fw-bold mb-3 text-success">Lets Bring You In</h3>
+            <form asp-action="SignUp" asp-controller="Login" method="post">
+                <div class="form-floating mb-3">
+                <input asp-for="Email" type="email" id="emailInput"
+                  class="form-control form-control-lg border-success border-opacity-25" placeholder="Email address"
+                  required />
+                <label asp-for="Email">Email address</label>
+                <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+              <div class="form-floating mb-3">
+                <input asp-for="Password" type="password" id="passwordInput"
+                  class="form-control form-control-lg border-success border-opacity-25" placeholder="Password"
+                  required />
+                <label asp-for="Password">Password</label>
+                <span asp-validation-for="Password" class="text-danger"></span>
+              </div>
+              <div class="form-floating mb-3">
+                <input asp-for="ConfirmPassword" type="password" id="confirmPasswordInput"
+                  class="form-control form-control-lg border-success border-opacity-25" placeholder="Confirm Password"
+                  required />
+                <label asp-for="ConfirmPassword">Confirm Password</label>
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+              </div>
+
+              <button type="submit" class="btn btn-success btn-lg w-100 mb-3"></button>
+                <span class="material-symbols-outlined align-middle me-2">login</span>
+                Sign in
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
