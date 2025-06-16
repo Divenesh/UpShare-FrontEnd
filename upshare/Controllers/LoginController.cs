@@ -177,5 +177,10 @@ namespace upshare.Controllers
 
             return RedirectToAction("SignUpConfirmation");
         }
+
+        public IActionResult SignUpConfirmSuccess()
+        {
+            return View();
+        }
     }
 }

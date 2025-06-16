@@ -67,7 +67,7 @@ namespace upshare.Models
             try
             {
                 // Supabase uses this method to resend confirmation emails
-                await _supabaseClient.Auth.ResetPasswordForEmail(email);
+                await _supabaseClient.Auth.SendMagicLink(email);
                 Console.WriteLine($"Confirmation email resent to: {email}");
             }
             catch (Exception ex)
