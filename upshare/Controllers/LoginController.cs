@@ -106,8 +106,37 @@ namespace upshare.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Process registration
-                // ...
+                try
+                {
+                    var authModel = new AuthModel(_supabaseClient);
+                    Console.WriteLine($"Attempting to sign up with email: {model.Email}");
+                    var session = await authModel.SignUpAsync(model.Email, model.Password);
+
+                    if (session != null && session.User != null)
+                    {
+                        var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.NameIdentifier, session.User.Id),
+                            new Claim(ClaimTypes.Name, session.User.Email ?? model.Email),
+                            new Claim(ClaimTypes.Email, model.Email),
+                        };
+
+                        var claimsIdentity = new ClaimsIdentity(
+                            claims,
+                            CookieAuthenticationDefaults.AuthenticationScheme
+                        );
+                        var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+                        return RedirectToAction("Index", "Home");
+                    }
+
+                    ModelState.AddModelError(string.Empty, "Sign up failed.");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, $"Sign up failed: {ex.Message}");
+                    Console.WriteLine($"Sign up error: {ex}");
+                }
             }
 
             return View(model);
