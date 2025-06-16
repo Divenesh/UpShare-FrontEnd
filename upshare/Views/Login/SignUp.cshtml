@@ -1,6 +1,6 @@
-﻿@model upshare.Models.LoginViewModel
+﻿@model upshare.Models.SignUpViewModel
 @{
-  ViewData["Title"] = "Login";
+  ViewData["Title"] = "Sign Up";
   ViewData["HideNavbar"] = true;
   ViewData["FullWidth"] = true;
 }
@@ -24,19 +24,15 @@
       <div class="col-md-6 col-lg-5 col-xl-4">
         <div class="card border-0 shadow-sm rounded-4 p-4">
           <div class="card-body py-2">
-            <h3 class="text-center fw-bold mb-3 text-success">Welcome Back</h3>
-            <form asp-action="SignIn" asp-controller="Login" method="post">
-              <!-- Add anti-forgery token for security -->
-              @Html.AntiForgeryToken()
-
-              <div class="form-floating mb-3">
+            <h3 class="text-center fw-bold mb-3 text-success">Lets Bring You In</h3>
+            <form asp-action="SignUp" asp-controller="Login" method="post">
+                <div class="form-floating mb-3">
                 <input asp-for="Email" type="email" id="emailInput"
                   class="form-control form-control-lg border-success border-opacity-25" placeholder="Email address"
                   required />
                 <label asp-for="Email">Email address</label>
                 <span asp-validation-for="Email" class="text-danger"></span>
-              </div>
-
+                </div>
               <div class="form-floating mb-3">
                 <input asp-for="Password" type="password" id="passwordInput"
                   class="form-control form-control-lg border-success border-opacity-25" placeholder="Password"
@@ -44,26 +40,18 @@
                 <label asp-for="Password">Password</label>
                 <span asp-validation-for="Password" class="text-danger"></span>
               </div>
-
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <div class="form-check">
-                  <input asp-for="RememberMe" class="form-check-input border-success" type="checkbox" id="rememberMe" />
-                  <label class="form-check-label small" asp-for="RememberMe">Remember me</label>
-                </div>
-                <a href="#!" class="text-success small">Forgot password?</a>
+              <div class="form-floating mb-3">
+                <input asp-for="ConfirmPassword" type="password" id="confirmPasswordInput"
+                  class="form-control form-control-lg border-success border-opacity-25" placeholder="Confirm Password"
+                  required />
+                <label asp-for="ConfirmPassword">Confirm Password</label>
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
               </div>
 
               <button type="submit" class="btn btn-success btn-lg w-100 mb-3">
                 <span class="material-symbols-outlined align-middle me-2">login</span>
-                Sign in
+                Sign Up
               </button>
-
-              <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
-              <div class="text-center mb-2 small">
-                <span class="text-muted">Don't have an account?</span>
-                <a asp-action="SignUp" asp-controller="Login" class="text-success ms-2">Sign up</a>
-              </div>
 
             </form>
           </div>
@@ -72,14 +60,3 @@
     </div>
   </div>
 </section>
-
-<style>
-  body,
-  html {
-    height: 100%;
-    margin: 0;
-    overflow: hidden !important;
-    font-family: 'Roboto', sans-serif;
-  }
-
-</style>
