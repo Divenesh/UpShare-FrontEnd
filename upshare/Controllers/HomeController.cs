@@ -50,30 +50,30 @@ public class HomeController : Controller
         }
     }
 
-public async Task<IActionResult> ItemDetails(string id)
-{
-    try
+    public async Task<IActionResult> ItemDetails(string id)
     {
-        if (string.IsNullOrEmpty(id))
+        try
         {
-            return RedirectToAction("Index");
-        }
+            if (string.IsNullOrEmpty(id))
+            {
+                return RedirectToAction("Index");
+            }
 
-        var itemDetails = await ItemDetailsViewModel.GetItemById(id);
-        
-        if (itemDetails.Item == null)
-        {
-            return NotFound();
+            var itemDetails = await ItemDetailsViewModel.GetItemById(id);
+
+            if (itemDetails.Item == null)
+            {
+                return NotFound();
+            }
+
+            return View(itemDetails);
         }
-        
-        return View(itemDetails);
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Controller error: {ex.Message}");
+            return View(new ItemDetailsViewModel());
+        }
     }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Controller error: {ex.Message}");
-        return View(new ItemDetailsViewModel());
-    }
-}
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

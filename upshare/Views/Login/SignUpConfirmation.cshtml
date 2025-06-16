@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Sign Up Confirmation";
+    ViewData["HideNavbar"] = true;
+    ViewData["FullWidth"] = true;
+}
+
+<section class="vh-100 login-section">
+  <div class="container-fluid py-5 h-100">
+    <div class="row d-flex align-items-center justify-content-center h-100">
+      <div class="col-md-8 col-lg-6 col-xl-6 d-none d-md-block">
+        <div class="text-center mb-4">
+          <img src="/assets/images/upShareNoBackground.png" class="img-fluid mb-4" style="max-width: 250px;"
+            alt="UpShare Logo">
+        </div>
+        <div class="text-center mb-4">
+          <img src="/assets/images/loginView1.png" class="img-fluid animation-float" alt="Login illustration">
+        </div>
+        <div class="text-center mt-4">
+          <h3 class="text-success fw-bold">Share what you don't use</h3>
+          <p class="text-muted">Join our community and start sharing today!</p>
+        </div>
+      </div>
+      
+      <div class="col-md-6 col-lg-5 col-xl-4">
+        <div class="card border-0 shadow-sm rounded-4 p-4">
+          <div class="card-body py-2">
+            <div class="text-center mb-4">
+              <span class="material-symbols-outlined text-success" style="font-size: 4rem;">mark_email_read</span>
+            </div>
+            <h3 class="text-center fw-bold mb-3 text-success">Check Your Email</h3>
+            
+            <p class="text-center mb-4">
+              Thank you for signing up! Please check your email for a confirmation link to activate your account.
+            </p>
+            
+            <div class="alert alert-light border-start border-success border-4 mb-4">
+              <div class="d-flex">
+                <span class="material-symbols-outlined text-success me-2">info</span>
+                <small>If you don't receive an email, please check your spam folder.</small>
+              </div>
+            </div>
+            
+<form asp-action="ResendConfirmation" asp-controller="Login" method="post">
+    <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-outline-success">
+            <span class="material-symbols-outlined align-middle me-2">send</span>
+            Resend Confirmation Email
+        </button>
+        <a href="@Url.Action("Auth", "Login")" class="btn btn-success">
+            <span class="material-symbols-outlined align-middle me-2">login</span>
+            Back to Login
+        </a>
+    </div>
+</form>
+            
+            <div class="text-center mt-4">
+              <small class="text-muted">
+                Need help? Contact <a href="mailto:divenesh.shamugam@gmail.com" class="text-success">divenesh.shamugam@gmail.com</a>
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<style>
+  body,
+  html {
+    height: 100%;
+    margin: 0;
+    overflow: hidden !important;
+    font-family: 'Roboto', sans-serif;
+  }
+
+</style>

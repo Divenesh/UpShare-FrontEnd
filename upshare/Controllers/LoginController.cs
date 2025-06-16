@@ -101,6 +101,11 @@ namespace upshare.Controllers
             return View(new SignUpViewModel());
         }
 
+        public IActionResult SignUpConfirmation()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> SignUp(SignUpViewModel model)
         {
@@ -127,7 +132,9 @@ namespace upshare.Controllers
                         );
                         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
-                        return RedirectToAction("Index", "Home");
+                        TempData["Email"] = model.Email;
+
+                        return RedirectToAction("SignUpConfirmation");
                     }
 
                     ModelState.AddModelError(string.Empty, "Sign up failed.");
@@ -140,6 +147,35 @@ namespace upshare.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpPost]
+        [Route("Login/ResendConfirmation")]
+        public async Task<IActionResult> ResendConfirmation()
+        {
+            var email = TempData["Email"] as string;
+            if (string.IsNullOrEmpty(email))
+            {
+                TempData["Error"] = "Email address is missing. Please sign up again.";
+                return RedirectToAction("Auth");
+            }
+
+            try
+            {
+                var authModel = new AuthModel(_supabaseClient);
+                await authModel.ResendConfirmationEmail(email);
+
+                TempData["Success"] =
+                    "Confirmation email has been resent. Please check your inbox.";
+                TempData.Keep("Email"); // Keep email for further requests if needed
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = $"Failed to resend confirmation email: {ex.Message}";
+                TempData.Keep("Email");
+            }
+
+            return RedirectToAction("SignUpConfirmation");
         }
     }
 }

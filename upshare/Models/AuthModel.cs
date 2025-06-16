@@ -10,14 +10,14 @@ namespace upshare.Models
         public string Password { get; set; } = string.Empty;
         public string Username { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;
-        
+
         private readonly Supabase.Client _supabaseClient;
-        
+
         public AuthModel(Supabase.Client supabaseClient)
         {
             _supabaseClient = supabaseClient;
         }
-        
+
         // Handle sign in and return the session
         public async Task<Session> SignInAsync(string email, string password)
         {
@@ -33,7 +33,7 @@ namespace upshare.Models
                 throw;
             }
         }
-        
+
 
         public async Task<Session> SignUpAsync(string email, string password)
         {
@@ -48,7 +48,7 @@ namespace upshare.Models
                 throw;
             }
         }
-        
+
         // Handle sign out
         public async Task SignOutAsync()
         {
@@ -62,5 +62,20 @@ namespace upshare.Models
                 throw;
             }
         }
+        public async Task ResendConfirmationEmail(string email)
+        {
+            try
+            {
+                // Supabase uses this method to resend confirmation emails
+                await _supabaseClient.Auth.ResetPasswordForEmail(email);
+                Console.WriteLine($"Confirmation email resent to: {email}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error resending confirmation email: {ex.Message}");
+                throw;
+            }
+        }
+
     }
 }

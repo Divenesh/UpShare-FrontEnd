@@ -11,18 +11,18 @@ builder.Services.AddScoped<Supabase.Client>(provider =>
 {
     var supabaseUrl = builder.Configuration["Supabase:Url"];
     var supabaseKey = builder.Configuration["Supabase:Key"];
-    
+
     if (string.IsNullOrEmpty(supabaseUrl) || string.IsNullOrEmpty(supabaseKey))
     {
         throw new InvalidOperationException("Supabase URL and Key must be configured");
     }
-    
+
     var options = new Supabase.SupabaseOptions
     {
         AutoRefreshToken = true,
         AutoConnectRealtime = true
     };
-    
+
     return new Supabase.Client(supabaseUrl, supabaseKey, options);
 });
 

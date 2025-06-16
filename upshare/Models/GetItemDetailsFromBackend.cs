@@ -8,13 +8,13 @@ namespace upshare.Models
     {
         [JsonPropertyName("item")]
         public ItemDetail? Item { get; set; }
-        
+
         [JsonPropertyName("sellers")]
         public List<SellerDetail>? Sellers { get; set; }
-        
+
         [JsonPropertyName("ratings")]
         public List<RatingDetail>? Ratings { get; set; }
-        
+
         [JsonPropertyName("specifications")]
         public List<SpecificationDetail>? Specifications { get; set; }
     }
@@ -86,7 +86,7 @@ namespace upshare.Models
 
                         // Deserialize JSON into an array of objects
                         var jsonElements = JsonSerializer.Deserialize<JsonElement[]>(jsonResponse, _jsonOptions);
-                        
+
                         // Create view model to populate
                         var viewModel = new ItemDetailsViewModel();
 
