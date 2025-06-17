@@ -182,5 +182,44 @@ namespace upshare.Controllers
         {
             return View();
         }
+
+        public IActionResult ForgotPassword()
+        {
+            return View(new ForgetPasswordViewModel());
+        }
+
+        public IActionResult ForgotPasswordSuccess()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPasswordSendEmail(ForgetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var authModel = new AuthModel(_supabaseClient);
+                    Console.WriteLine(
+                        $"Attempting to send forget password with email: {model.Email}"
+                    );
+
+                    if (string.IsNullOrEmpty(model.Email))
+                    {
+                        ModelState.AddModelError(string.Empty, "Email is required.");
+                        return View(model);
+                    }
+                    await authModel.SendForgetPassword(model.Email);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, $"Forget Password error : {ex.Message}");
+                    Console.WriteLine($"Forget password error: {ex}");
+                }
+            }
+
+            return View("ForgotPasswordSuccess", model);
+        }
     }
 }

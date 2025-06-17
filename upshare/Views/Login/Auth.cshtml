@@ -50,7 +50,7 @@
                   <input asp-for="RememberMe" class="form-check-input border-success" type="checkbox" id="rememberMe" />
                   <label class="form-check-label small" asp-for="RememberMe">Remember me</label>
                 </div>
-                <a href="#!" class="text-success small">Forgot password?</a>
+                <a asp-action="ForgotPassword" asp-controller="Login" class="text-success small">Forgot password?</a>
               </div>
 
               <button type="submit" class="btn btn-success btn-lg w-100 mb-3">

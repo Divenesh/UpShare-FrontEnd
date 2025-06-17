@@ -66,7 +66,6 @@ namespace upshare.Models
         {
             try
             {
-                // Supabase uses this method to resend confirmation emails
                 await _supabaseClient.Auth.SendMagicLink(email);
                 Console.WriteLine($"Confirmation email resent to: {email}");
             }
@@ -77,5 +76,18 @@ namespace upshare.Models
             }
         }
 
+        public async Task SendForgetPassword(string email)
+        {
+            try
+            {
+                await _supabaseClient.Auth.ResetPasswordForEmail(email);
+                Console.WriteLine($"Forget Password sent to : {email}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error sending forget password link: {ex.Message}");
+                throw;
+            }
+        }
     }
 }
