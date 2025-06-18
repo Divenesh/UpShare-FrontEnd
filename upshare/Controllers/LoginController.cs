@@ -167,7 +167,7 @@ namespace upshare.Controllers
 
                 TempData["Success"] =
                     "Confirmation email has been resent. Please check your inbox.";
-                TempData.Keep("Email"); // Keep email for further requests if needed
+                TempData.Keep("Email");
             }
             catch (Exception ex)
             {
@@ -220,6 +220,50 @@ namespace upshare.Controllers
             }
 
             return View("ForgotPasswordSuccess", model);
+        }
+
+        [HttpGet]
+        public IActionResult EnterNewPassword(
+            [FromQuery] string access_token,
+            [FromQuery] string type
+        )
+        {
+            if (string.IsNullOrEmpty(access_token) || type != "recovery")
+            {
+                return RedirectToAction("Auth");
+            }
+
+            var model = new EnterNewPasswordViewModel { Token = access_token };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdatePassword(EnterNewPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("EnterNewPassword", model);
+            }
+
+            try
+            {
+                // First, set the auth state with the token
+                await _supabaseClient.Auth.SetSession(model.Token, model.Token);
+
+                // Now update the password
+                await _supabaseClient.Auth.Update(
+                    new Supabase.Gotrue.UserAttributes { Password = model.NewPassword }
+                );
+
+                TempData["SuccessMessage"] =
+                    "Password has been updated successfully. Please log in with your new password.";
+                return RedirectToAction("Auth");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, $"Failed to update password: {ex.Message}");
+                return View("EnterNewPassword", model);
+            }
         }
     }
 }
