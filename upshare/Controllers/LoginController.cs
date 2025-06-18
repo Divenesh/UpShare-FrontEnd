@@ -257,13 +257,18 @@ namespace upshare.Controllers
 
                 TempData["SuccessMessage"] =
                     "Password has been updated successfully. Please log in with your new password.";
-                return RedirectToAction("Auth");
+                return RedirectToAction("EnterNewPasswordSuccess");
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, $"Failed to update password: {ex.Message}");
                 return View("EnterNewPassword", model);
             }
+        }
+
+        public IActionResult EnterNewPasswordSuccess()
+        {
+            return View();
         }
     }
 }
