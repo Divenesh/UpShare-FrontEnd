@@ -9,7 +9,11 @@
     
     if (accessToken && type === 'recovery') {
         window.location.href = `/Login/EnterNewPassword?access_token=${encodeURIComponent(accessToken)}&type=${encodeURIComponent(type)}`;
-    } else {
+    }
+    else if (type === 'signup') {
+        window.location.href = `/Login/SignUpConfirmSuccess`;
+    }
+    else {
         window.location.href = '/Login/Auth';
     }
 }
