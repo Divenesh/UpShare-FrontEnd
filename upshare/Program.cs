@@ -20,14 +20,15 @@ builder.Services.AddScoped<Supabase.Client>(provider =>
     var options = new Supabase.SupabaseOptions
     {
         AutoRefreshToken = true,
-        AutoConnectRealtime = true
+        AutoConnectRealtime = true,
     };
 
     return new Supabase.Client(supabaseUrl, supabaseKey, options);
 });
 
 // Add authentication services
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+builder
+    .Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.LoginPath = "/Login/Auth";
@@ -51,9 +52,14 @@ app.UseRouting();
 // Add authentication middleware (order matters!)
 app.UseAuthentication();
 app.UseAuthorization();
-
+Console.WriteLine("Supabase client initialized successfully.");
+app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    name: "requestHandler",
+    pattern: "request-handler",
+    defaults: new { controller = "RequestHandler", action = "RequestHandlingPage" }
+);
+
+Console.WriteLine("Request handler route mapped successfully.");
 
 app.Run();
