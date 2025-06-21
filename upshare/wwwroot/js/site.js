@@ -18,9 +18,7 @@
     }
 }
 
-// Initialize password reset handler on specific pages
 document.addEventListener('DOMContentLoaded', function() {
-    // Check if we're on the request handling page
     if (document.body.classList.contains('request-handling-page')) {
         handlePasswordResetRequest();
     }

@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -247,17 +246,18 @@ namespace upshare.Controllers
 
             try
             {
-                // First, set the auth state with the token
-                await _supabaseClient.Auth.SetSession(model.Token, model.Token);
+                var authModel = new AuthModel(_supabaseClient);
+                Console.WriteLine($"Attempting to update password for token: {model.Token}");
 
-                // Now update the password
-                await _supabaseClient.Auth.Update(
-                    new Supabase.Gotrue.UserAttributes { Password = model.NewPassword }
-                );
+                var session = await authModel.UpdateUserPassword(model);
 
-                TempData["SuccessMessage"] =
-                    "Password has been updated successfully. Please log in with your new password.";
-                return RedirectToAction("EnterNewPasswordSuccess");
+                if (session != null && session.User != null)
+                {
+                    return RedirectToAction("EnterNewPasswordSuccess");
+                }
+
+                ModelState.AddModelError(string.Empty, "Failed to update password.");
+                return View("EnterNewPassword", model);
             }
             catch (Exception ex)
             {
