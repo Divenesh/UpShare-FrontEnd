@@ -37,7 +37,6 @@ namespace upshare.Controllers
                         var claims = new List<Claim>
                         {
                             new Claim(ClaimTypes.NameIdentifier, session.User.Id),
-                            new Claim(ClaimTypes.Name, session.User.Email ?? model.Email),
                             new Claim(ClaimTypes.Email, model.Email),
                         };
 
@@ -60,7 +59,7 @@ namespace upshare.Controllers
                             authProperties
                         );
 
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("GetUser", "User");
                     }
 
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
@@ -121,7 +120,6 @@ namespace upshare.Controllers
                         var claims = new List<Claim>
                         {
                             new Claim(ClaimTypes.NameIdentifier, session.User.Id),
-                            new Claim(ClaimTypes.Name, session.User.Email ?? model.Email),
                             new Claim(ClaimTypes.Email, model.Email),
                         };
 
