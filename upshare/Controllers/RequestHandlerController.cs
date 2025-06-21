@@ -4,7 +4,6 @@ namespace upshare.Controllers
 {
     public class RequestHandlerController : Controller
     {
-        // GET: RequestHandlingController
         [HttpGet]
         [Route("request-handler")]
         public IActionResult RequestHandlingPage()

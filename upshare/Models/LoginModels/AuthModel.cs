@@ -34,7 +34,6 @@ namespace upshare.Models
             }
         }
 
-
         public async Task<Session> SignUpAsync(string email, string password)
         {
             try
@@ -62,6 +61,7 @@ namespace upshare.Models
                 throw;
             }
         }
+
         public async Task ResendConfirmationEmail(string email)
         {
             try
@@ -86,6 +86,25 @@ namespace upshare.Models
             catch (Exception ex)
             {
                 Console.WriteLine($"Error sending forget password link: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<Session> UpdateUserPassword(EnterNewPasswordViewModel model)
+        {
+            try
+            {
+                await _supabaseClient.Auth.SetSession(model.Token, model.Token);
+
+                await _supabaseClient.Auth.Update(
+                    new Supabase.Gotrue.UserAttributes { Password = model.NewPassword }
+                );
+                Console.WriteLine("Password updated successfully.");
+                return _supabaseClient.Auth.CurrentSession;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating password: {ex.Message}");
                 throw;
             }
         }
