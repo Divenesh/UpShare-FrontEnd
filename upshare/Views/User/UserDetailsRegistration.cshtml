@@ -1,9 +1,142 @@
-﻿
+﻿@model upshare.Models.User.UserDetailsModel
+@using System.Security.Claims
 @{
-    ViewData["Title"] = "User Details Registration";
-    Layout = "~/Views/Shared/_Layout.cshtml";  
+    ViewData["Title"] = "Complete Your Profile";
+    ViewData["HideNavbar"] = true;
 }
 
-<section>
-    <H1>IM HERE</H1>    
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-4 p-lg-5">
+                        <h2 class="text-center text-success fw-bold mb-4">Complete Your Profile</h2>
+                        <p class="text-center text-muted mb-4">Please provide your details to complete your UpShare
+                            profile</p>
+
+                        
+                        <form asp-action="SaveUserDetails" asp-controller="User" method="post"
+                            enctype="multipart/form-data">
+                            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                            <div class="row mb-3">
+                                <div class="col-md-6 mb-3 mb-md-0">
+                                    <div class="form-floating">
+                                        <input asp-for="firstname" class="form-control" placeholder="First Name" />
+                                        <label asp-for="firstname">First Name</label>
+                                        <span asp-validation-for="firstname" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input asp-for="lastname" class="form-control" placeholder="Last Name" />
+                                        <label asp-for="lastname">Last Name</label>
+                                        <span asp-validation-for="lastname" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="form-floating">
+                                    <input asp-for="email" class="form-control" readonly
+                                        value="@User.FindFirstValue(ClaimTypes.Email)" />
+                                    <label asp-for="email">Email</label>
+                                </div>
+                            </div>
+
+<div class="mb-4">
+    <label class="form-label">Profile Picture</label>
+    <div class="d-flex align-items-center">
+        <div class="me-3">
+            <div class="rounded-circle bg-light d-flex justify-content-center align-items-center"
+                style="width: 100px; height: 100px; overflow: hidden;">
+                <img id="profile-preview" src="/assets/images/profile-placeholder.png"
+                    class="img-fluid" alt="Profile Picture">
+            </div>
+        </div>
+        <div class="flex-grow-1">
+            <div class="input-group">
+                <input type="file" class="form-control" id="profile-upload" name="ProfileImage"
+                    accept="image/*" />
+                <button type="button" class="btn btn-outline-secondary" id="reset-profile-btn" style="height: 38px;">
+                    <span class="material-symbols-outlined">refresh</span>
+                </button>
+            </div>
+            <div class="form-text">Upload a square image for best results. Max size 2MB.</div>
+        </div>
+    </div>
+</div>
+
+                            <div class="mb-4">
+                                <div class="form-floating">
+                                    <input asp-for="phoneNumber" class="form-control" placeholder="Phone Number" />
+                                    <label asp-for="phoneNumber">Phone Number</label>
+                                    <span asp-validation-for="phoneNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <h5 class="text-success mt-4 mb-3">Your Address</h5>
+
+                            <div class="mb-3">
+                                <div class="form-floating">
+                                    <input asp-for="address" class="form-control" placeholder="Street Address" />
+                                    <label asp-for="address">Street Address</label>
+                                    <span asp-validation-for="address" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-4 mb-3 mb-md-0">
+                                    <div class="form-floating">
+                                        <input asp-for="city" class="form-control" placeholder="City" />
+                                        <label asp-for="city">City</label>
+                                        <span asp-validation-for="city" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3 mb-md-0">
+                                    <div class="form-floating">
+                                        <input asp-for="state" class="form-control" placeholder="State/Province" />
+                                        <label asp-for="state">State/Province</label>
+                                        <span asp-validation-for="state" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input asp-for="country" class="form-control" placeholder="Country" />
+                                        <label asp-for="country">Country</label>
+                                        <span asp-validation-for="country" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2 mt-4">
+                                <button type="submit" class="btn btn-success btn-lg">
+                                    <span class="material-symbols-outlined align-middle me-2">check_circle</span>
+                                    Save Profile
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
+
+@section Scripts {
+    <script>
+        document.getElementById('profile-upload').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    document.getElementById('profile-preview').src = event.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
