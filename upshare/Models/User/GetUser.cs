@@ -61,4 +61,33 @@ public class GetUser
             return new GetUser();
         }
     }
+
+    public static async Task<bool> SaveUser(UserDetailsModel model)
+    {
+        var locationUrl = $"http://localhost:5000/user/";
+
+        using HttpClient client = new();
+        try
+        {
+            string jsonData = JsonSerializer.Serialize(model);
+            StringContent content = new(jsonData, System.Text.Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await client.PostAsync(locationUrl, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                Console.WriteLine($"API Error: {response.StatusCode}");
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error saving user data: {ex.Message}");
+            return false;
+        }
+    }
 }

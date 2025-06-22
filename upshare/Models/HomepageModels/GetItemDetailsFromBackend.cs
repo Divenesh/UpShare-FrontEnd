@@ -39,7 +39,7 @@ namespace upshare.Models
         public string sellername { get; set; } = string.Empty;
         public string regnum { get; set; } = string.Empty;
         public string address { get; set; } = string.Empty;
-        public long contactnum { get; set; }
+        public string contactnum { get; set; } = string.Empty;
     }
 
     // Rating details
