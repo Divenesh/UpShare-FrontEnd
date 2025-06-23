@@ -16,8 +16,7 @@
                             profile</p>
 
                         
-                        <form asp-action="SaveUserDetails" asp-controller="User" method="post"
-                            enctype="multipart/form-data">
+                        <form asp-action="SaveUserDetails" asp-controller="User" method="post" enctype="multipart/form-data">
                             <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
                             <div class="row mb-3">
                                 <div class="col-md-6 mb-3 mb-md-0">
@@ -44,28 +43,27 @@
                                 </div>
                             </div>
 
-<div class="mb-4">
-    <label class="form-label">Profile Picture</label>
-    <div class="d-flex align-items-center">
-        <div class="me-3">
-            <div class="rounded-circle bg-light d-flex justify-content-center align-items-center"
-                style="width: 100px; height: 100px; overflow: hidden;">
-                <img id="profile-preview" src="/assets/images/profile-placeholder.png"
-                    class="img-fluid" alt="Profile Picture">
-            </div>
-        </div>
-        <div class="flex-grow-1">
-            <div class="input-group">
-                <input type="file" class="form-control" id="profile-upload" name="ProfileImage"
-                    accept="image/*" />
-                <button type="button" class="btn btn-outline-secondary" id="reset-profile-btn" style="height: 38px;">
-                    <span class="material-symbols-outlined">refresh</span>
-                </button>
-            </div>
-            <div class="form-text">Upload a square image for best results. Max size 2MB.</div>
-        </div>
-    </div>
-</div>
+                            <div class="mb-4">
+                                <label class="form-label">Profile Picture</label>
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <div class="rounded-circle bg-light d-flex justify-content-center align-items-center"
+                                            style="width: 100px; height: 100px; overflow: hidden;">
+                                            <img id="profile-preview" src="/assets/images/profile-placeholder.png"
+                                                class="img-fluid" alt="Profile Picture">
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="input-group">
+                                            <input type="file" class="form-control" id="profile-upload" name="profilePicture" accept="image/*" />
+                                            <button type="button" class="btn btn-outline-secondary" id="reset-profile-btn" style="height: 38px;">
+                                                <span class="material-symbols-outlined">refresh</span>
+                                            </button>
+                                        </div>
+                                        <div class="form-text">Upload a square image for best results. Max size 2MB.</div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="mb-4">
                                 <div class="form-floating">

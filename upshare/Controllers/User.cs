@@ -81,6 +81,16 @@ namespace upshare.Controllers
             Console.WriteLine("Model state is valid, proceeding to save user details...");
             try
             {
+                // Debug information
+                var files = HttpContext.Request.Form.Files;
+                Console.WriteLine($"Files received: {files.Count}");
+                foreach (var file in files)
+                {
+                    Console.WriteLine($"File name: {file.FileName}, Size: {file.Length}");
+                }
+
+                Console.WriteLine($"Model profile picture is null: {model.profilePicture == null}");
+
                 var result = await Models.User.GetUser.SaveUser(model);
 
                 if (result)

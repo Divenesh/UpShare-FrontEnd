@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http.Features;
 using Supabase;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,6 +36,11 @@ builder
         options.LogoutPath = "/Login/Logout";
         options.ExpireTimeSpan = TimeSpan.FromDays(7);
     });
+
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 10 * 1024 * 1024; // 10MB
+});
 
 var app = builder.Build();
 
