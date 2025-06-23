@@ -69,9 +69,40 @@ public class GetUser
         using HttpClient client = new();
         try
         {
-            string jsonData = JsonSerializer.Serialize(model);
-            StringContent content = new(jsonData, System.Text.Encoding.UTF8, "application/json");
+            // Create multipart form content to send both file and user data
+            using var content = new MultipartFormDataContent();
 
+            if (model.profilePicture != null && model.profilePicture.Length > 0)
+            {
+                // Read file into memory
+                using var stream = model.profilePicture.OpenReadStream();
+                using var ms = new MemoryStream();
+                await stream.CopyToAsync(ms);
+                var fileBytes = ms.ToArray();
+
+                // Create ByteArrayContent from the file
+                var fileContent = new ByteArrayContent(fileBytes);
+                fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(model.profilePicture.ContentType);
+
+                // Add to form with the same name as expected by your API
+                content.Add(fileContent, "profilePicture", model.profilePicture.FileName);
+
+                Console.WriteLine($"File {model.profilePicture.FileName} added to request.");
+            }
+
+            // Add other user properties
+            content.Add(new StringContent(model.id), "id");
+            content.Add(new StringContent(model.email), "email");
+            content.Add(new StringContent(model.dateJoined.ToString("o")), "dateJoined");
+            content.Add(new StringContent(model.firstname), "firstname");
+            content.Add(new StringContent(model.lastname ?? string.Empty), "lastname");
+            content.Add(new StringContent(model.phoneNumber), "phoneNumber");
+            content.Add(new StringContent(model.address), "address");
+            content.Add(new StringContent(model.city), "city");
+            content.Add(new StringContent(model.state), "state");
+            content.Add(new StringContent(model.country ?? string.Empty), "country");
+
+            // Send the multipart request
             HttpResponseMessage response = await client.PostAsync(locationUrl, content);
 
             if (response.IsSuccessStatusCode)
@@ -81,6 +112,8 @@ public class GetUser
             else
             {
                 Console.WriteLine($"API Error: {response.StatusCode}");
+                string errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error details: {errorContent}");
                 return false;
             }
         }

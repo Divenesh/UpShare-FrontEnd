@@ -15,8 +15,7 @@ public class UserDetailsModel
     [Required(ErrorMessage = "Date Joined is required")]
     public DateTime dateJoined { get; set; } = DateTime.MinValue;
 
-    public string profilePicture { get; set; } =
-        "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png";
+    public IFormFile? profilePicture { get; set; }
 
     [Required(ErrorMessage = "First name is required")]
     [StringLength(50, ErrorMessage = "First name cannot exceed 50 characters")]
