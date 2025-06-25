@@ -25,6 +25,7 @@ namespace upshare.Models
             {
                 var session = await _supabaseClient.Auth.SignIn(email, password);
                 Console.WriteLine($"User signed in: {session.User?.Email}");
+                Console.WriteLine("Session:" + _supabaseClient.Auth.CurrentSession?.AccessToken);
                 return session;
             }
             catch (Exception ex)
