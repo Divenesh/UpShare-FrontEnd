@@ -25,14 +25,48 @@
                     <div class="ms-auto d-flex align-items-center">
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <span class="me-3 text-success fw-semibold">Welcome, @User.FindFirstValue("firstName")!</span>
-                            <form asp-action="Logout" asp-controller="Login" method="post" class="d-inline">
-                                <button type="submit" class="btn btn-outline-success">
-                                    <span class="material-symbols-outlined align-middle me-1"
-                                        style="font-size: 18px;">logout</span>
-                                    Logout
+                            <div class="dropdown">
+                                <button class="btn btn-link p-0 border-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    @{
+                                        var profileUrl = User.FindFirst("profilePicture")?.Value;
+                                        var imageUrl = String.IsNullOrEmpty(profileUrl) ? 
+                                            "/assets/images/default-avatar.png" : 
+                                            profileUrl.Contains("?") ? 
+                                                profileUrl + "&download=true&t=" + DateTime.Now.Ticks : 
+                                                profileUrl + "?download=true&t=" + DateTime.Now.Ticks;
+                                    }
+                                    <img src="@imageUrl" 
+                                        alt="Profile" 
+                                        class="rounded-circle" 
+                                        width="40" 
+                                        height="40" 
+                                        onerror="this.src='/assets/images/default-avatar.png'" 
+                                        style="object-fit: cover;">
                                 </button>
-                            </form>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <a class="dropdown-item" asp-action="Profile" asp-controller="User">
+                                            <span class="material-symbols-outlined align-middle me-2" style="font-size: 18px">person</span>
+                                            Profile
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-action="PurchaseHistory" asp-controller="User">
+                                            <span class="material-symbols-outlined align-middle me-2" style="font-size: 18px;">history</span>
+                                            Purchase History
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <form asp-action="Logout" asp-controller="Login" method="post" class="d-inline w-100">
+                                            <button type="submit" class="dropdown-item border-0 bg-transparent">
+                                                <span class="material-symbols-outlined align-middle me-2" style="font-size: 18px;">logout</span>
+                                                Logout
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
                         }
                         else
                         {
@@ -46,20 +80,20 @@
             </nav>
         </header>
     }
-@if (ViewData["FullWidth"] != null && (bool)ViewData["FullWidth"] == true)
-{
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
-}
-else
-{
-    <div class="container">
+    @if (ViewData["FullWidth"] != null && (bool)ViewData["FullWidth"] == true)
+    {
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
-    </div>
-}
+    }
+    else
+    {
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    }
     
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

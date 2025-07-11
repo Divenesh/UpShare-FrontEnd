@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <PackageReference Include="FontAwesome" Version="4.7.0" />
-    <PackageReference Include="supabase" Version="1.1.1" />
   </ItemGroup>
 
 </Project>
