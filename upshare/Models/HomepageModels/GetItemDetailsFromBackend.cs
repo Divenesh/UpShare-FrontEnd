@@ -64,11 +64,12 @@ namespace upshare.Models
         public ItemDetail? Item { get; set; }
         public List<SellerDetail> Sellers { get; set; } = new List<SellerDetail>();
         public List<RatingDetail> Ratings { get; set; } = new List<RatingDetail>();
-        public List<SpecificationDetail> Specifications { get; set; } = new List<SpecificationDetail>();
+        public List<SpecificationDetail> Specifications { get; set; } =
+            new List<SpecificationDetail>();
 
         private static readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
         {
-            PropertyNameCaseInsensitive = true
+            PropertyNameCaseInsensitive = true,
         };
 
         public static async Task<ItemDetailsViewModel> GetItemById(string id)
@@ -85,7 +86,10 @@ namespace upshare.Models
                         string jsonResponse = await response.Content.ReadAsStringAsync();
 
                         // Deserialize JSON into an array of objects
-                        var jsonElements = JsonSerializer.Deserialize<JsonElement[]>(jsonResponse, _jsonOptions);
+                        var jsonElements = JsonSerializer.Deserialize<JsonElement[]>(
+                            jsonResponse,
+                            _jsonOptions
+                        );
 
                         // Create view model to populate
                         var viewModel = new ItemDetailsViewModel();
@@ -95,19 +99,39 @@ namespace upshare.Models
                         {
                             if (element.TryGetProperty("item", out var itemElement))
                             {
-                                viewModel.Item = JsonSerializer.Deserialize<ItemDetail>(itemElement.ToString(), _jsonOptions);
+                                viewModel.Item = JsonSerializer.Deserialize<ItemDetail>(
+                                    itemElement.ToString(),
+                                    _jsonOptions
+                                );
                             }
                             else if (element.TryGetProperty("sellers", out var sellersElement))
                             {
-                                viewModel.Sellers = JsonSerializer.Deserialize<List<SellerDetail>>(sellersElement.ToString(), _jsonOptions) ?? new List<SellerDetail>();
+                                viewModel.Sellers =
+                                    JsonSerializer.Deserialize<List<SellerDetail>>(
+                                        sellersElement.ToString(),
+                                        _jsonOptions
+                                    ) ?? new List<SellerDetail>();
                             }
                             else if (element.TryGetProperty("ratings", out var ratingsElement))
                             {
-                                viewModel.Ratings = JsonSerializer.Deserialize<List<RatingDetail>>(ratingsElement.ToString(), _jsonOptions) ?? new List<RatingDetail>();
+                                viewModel.Ratings =
+                                    JsonSerializer.Deserialize<List<RatingDetail>>(
+                                        ratingsElement.ToString(),
+                                        _jsonOptions
+                                    ) ?? new List<RatingDetail>();
                             }
-                            else if (element.TryGetProperty("specifications", out var specificationsElement))
+                            else if (
+                                element.TryGetProperty(
+                                    "specifications",
+                                    out var specificationsElement
+                                )
+                            )
                             {
-                                viewModel.Specifications = JsonSerializer.Deserialize<List<SpecificationDetail>>(specificationsElement.ToString(), _jsonOptions) ?? new List<SpecificationDetail>();
+                                viewModel.Specifications =
+                                    JsonSerializer.Deserialize<List<SpecificationDetail>>(
+                                        specificationsElement.ToString(),
+                                        _jsonOptions
+                                    ) ?? new List<SpecificationDetail>();
                             }
                         }
 

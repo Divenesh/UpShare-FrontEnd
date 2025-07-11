@@ -1,18 +1,24 @@
+using System;
+using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using upshare.Models;
 
 namespace upshare.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly Supabase.Client _supabaseClient;
+        private readonly string _apiBaseUrl;
+        private readonly AuthModel _authModel;
 
-        public LoginController(Supabase.Client supabaseClient)
+        public LoginController(IConfiguration configuration)
         {
-            _supabaseClient = supabaseClient;
+            _apiBaseUrl = configuration["ApiBaseUrl"] ?? "http://localhost:5000";
+            _authModel = new AuthModel(_apiBaseUrl);
         }
 
         [HttpGet]
@@ -28,9 +34,8 @@ namespace upshare.Controllers
             {
                 try
                 {
-                    var authModel = new AuthModel(_supabaseClient);
                     Console.WriteLine($"Attempting to sign in with email: {model.Email}");
-                    var session = await authModel.SignInAsync(model.Email, model.Password);
+                    var session = await _authModel.SignInAsync(model.Email, model.Password);
 
                     if (session != null && session.User != null)
                     {
@@ -80,8 +85,7 @@ namespace upshare.Controllers
             Console.WriteLine("Logging out user...");
             try
             {
-                var authModel = new AuthModel(_supabaseClient);
-                await authModel.SignOutAsync();
+                await _authModel.SignOutAsync();
 
                 await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             }
@@ -111,9 +115,8 @@ namespace upshare.Controllers
             {
                 try
                 {
-                    var authModel = new AuthModel(_supabaseClient);
                     Console.WriteLine($"Attempting to sign up with email: {model.Email}");
-                    var session = await authModel.SignUpAsync(model.Email, model.Password);
+                    var session = await _authModel.SignUpAsync(model.Email, model.Password);
 
                     if (session != null && session.User != null)
                     {
@@ -159,8 +162,7 @@ namespace upshare.Controllers
 
             try
             {
-                var authModel = new AuthModel(_supabaseClient);
-                await authModel.ResendConfirmationEmail(email);
+                await _authModel.ResendConfirmationEmail(email);
 
                 TempData["Success"] =
                     "Confirmation email has been resent. Please check your inbox.";
@@ -197,7 +199,6 @@ namespace upshare.Controllers
             {
                 try
                 {
-                    var authModel = new AuthModel(_supabaseClient);
                     Console.WriteLine(
                         $"Attempting to send forget password with email: {model.Email}"
                     );
@@ -207,7 +208,7 @@ namespace upshare.Controllers
                         ModelState.AddModelError(string.Empty, "Email is required.");
                         return View(model);
                     }
-                    await authModel.SendForgetPassword(model.Email);
+                    await _authModel.SendForgetPassword(model.Email);
                 }
                 catch (Exception ex)
                 {
@@ -244,10 +245,9 @@ namespace upshare.Controllers
 
             try
             {
-                var authModel = new AuthModel(_supabaseClient);
                 Console.WriteLine($"Attempting to update password for token: {model.Token}");
 
-                var session = await authModel.UpdateUserPassword(model);
+                var session = await _authModel.UpdateUserPassword(model);
 
                 if (session != null && session.User != null)
                 {

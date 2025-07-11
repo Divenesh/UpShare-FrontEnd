@@ -5,6 +5,7 @@ namespace upshare.Models.User;
 
 public class UserDetailsModel
 {
+
     [Required(ErrorMessage = "ID is required")]
     public string id { get; set; } = string.Empty;
 
@@ -13,7 +14,7 @@ public class UserDetailsModel
     public string email { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Date Joined is required")]
-    public DateTime dateJoined { get; set; } = DateTime.MinValue;
+    public DateTime dateJoined { get; set; } = DateTime.Now;
 
     public IFormFile? profilePicture { get; set; }
 
