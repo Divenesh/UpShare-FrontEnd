@@ -25,25 +25,24 @@
                     <div class="ms-auto d-flex align-items-center">
                         @if (User.Identity.IsAuthenticated)
                         {
+                            <span class="me-3">Hi @User.FindFirst("firstName")?.Value</span>
                             <div class="dropdown">
                                 <button class="btn btn-link p-0 border-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                     @{
                                         var profileUrl = User.FindFirst("profilePicture")?.Value;
-                                        var imageUrl = String.IsNullOrEmpty(profileUrl) ? 
-                                            "/assets/images/default-avatar.png" : 
-                                            profileUrl.Contains("?") ? 
-                                                profileUrl + "&download=true&t=" + DateTime.Now.Ticks : 
-                                                profileUrl + "?download=true&t=" + DateTime.Now.Ticks;
+                                        var imageUrl = !string.IsNullOrEmpty(profileUrl) 
+                                        ? profileUrl
+                                        : "/assets/images/user.png";
                                     }
                                     <img src="@imageUrl" 
                                         alt="Profile" 
                                         class="rounded-circle" 
                                         width="40" 
                                         height="40" 
-                                        onerror="this.src='/assets/images/default-avatar.png'" 
+                                        onerror="this.src='/assets/images/user.png';" 
                                         style="object-fit: cover;">
                                 </button>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                <ul class="dropdown-menu dropdown-menu-end profile-dropdown" aria-labelledby="dropdownMenuButton">
                                     <li>
                                         <a class="dropdown-item" asp-action="Profile" asp-controller="User">
                                             <span class="material-symbols-outlined align-middle me-2" style="font-size: 18px">person</span>
