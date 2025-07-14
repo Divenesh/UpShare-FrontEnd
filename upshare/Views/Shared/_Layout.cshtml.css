@@ -40,6 +40,11 @@ button.accept-policy {
   line-height: inherit;
 }
 
+.profile-dropdown {
+  min-width: 200px;
+  z-index: 1050;
+}
+
 .navbar {
   padding: 0.5rem 1rem;
   background-color: #ffffff;
