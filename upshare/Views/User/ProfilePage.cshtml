@@ -1,0 +1,302 @@
+﻿@{
+    ViewBag.Title = "Profile Page";
+    ViewData["Title"] = "Profile";
+}
+
+<section class="profile-page py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-12">
+                <!-- Profile Card -->
+                <div class="card shadow-lg border-0 rounded-3">
+                    <!-- Profile Header -->
+                    <div class="card-header bg-primary text-white text-center py-4">
+                        <div class="profile-image-container mb-3">
+                            @{
+                                var profileUrl = User.FindFirst("profilePicture")?.Value;
+                                var imageUrl = string.IsNullOrEmpty(profileUrl) 
+                                    ? "/assets/images/default-avatar.png" 
+                                    : profileUrl;
+                                    
+                                if (!string.IsNullOrEmpty(imageUrl) && imageUrl != "/assets/images/default-avatar.png") {
+                                    imageUrl = imageUrl.Contains("?") 
+                                        ? imageUrl + "&token=read&t=" + DateTime.Now.Ticks 
+                                        : imageUrl + "?token=read&t=" + DateTime.Now.Ticks;
+                                }
+                            }
+                            <div class="position-relative d-inline-block">
+                                <img src="@imageUrl" 
+                                     alt="Profile Picture" 
+                                     class="profile-image rounded-circle border border-3 border-white shadow"
+                                     onerror="this.src='/assets/images/default-avatar.png'"
+                                     id="profileImagePreview">
+                                <div class="edit-mode d-none">
+                                    <input type="file" id="profileImageInput" class="d-none" accept="image/*">
+                                    <button type="button" class="btn btn-sm btn-light rounded-circle position-absolute bottom-0 end-0" 
+                                            onclick="document.getElementById('profileImageInput').click()">
+                                        <span class="material-symbols-outlined" style="font-size: 16px;">camera_alt</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="view-mode">
+                            <h3 class="mb-1">@(User.FindFirst("firstName")?.Value ?? "User") @(User.FindFirst("lastName")?.Value ?? "")</h3>
+                            <p class="mb-0 opacity-75">@(User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "email@example.com")</p>
+                        </div>
+                    </div>
+
+                    <!-- Profile Body -->
+                    <div class="card-body p-4">
+                        <form id="profileForm" asp-action="UpdateProfile" asp-controller="User" method="post" enctype="multipart/form-data">
+                            <!-- User Information -->
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <h5 class="text-muted border-bottom pb-2 mb-3">
+                                        <span class="material-symbols-outlined align-middle me-2">person</span>
+                                        Personal Information
+                                    </h5>
+                                </div>
+                                
+                                <div class="col-sm-6">
+                                    <div class="info-item">
+                                        <label class="form-label text-muted small">First Name</label>
+                                        <p class="fw-medium view-mode">@(User.FindFirst("firstName")?.Value ?? "Not provided")</p>
+                                        <input type="text" class="form-control edit-mode d-none" name="firstName" 
+                                               value="@(User.FindFirst("firstName")?.Value ?? "")" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-sm-6">
+                                    <div class="info-item">
+                                        <label class="form-label text-muted small">Last Name</label>
+                                        <p class="fw-medium view-mode">@(User.FindFirst("lastName")?.Value ?? "Not provided")</p>
+                                        <input type="text" class="form-control edit-mode d-none" name="lastName" 
+                                               value="@(User.FindFirst("lastName")?.Value ?? "")" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <div class="info-item">
+                                        <label class="form-label text-muted small">Email Address</label>
+                                        <p class="fw-medium">@(User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "Not provided")</p>
+                                        <small class="text-muted">Email cannot be changed</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-sm-6">
+                                    <div class="info-item">
+                                        <label class="form-label text-muted small">Phone Number</label>
+                                        <p class="fw-medium view-mode">@(User.FindFirst("phoneNumber")?.Value ?? "Not provided")</p>
+                                        <input type="tel" class="form-control edit-mode d-none" name="phoneNumber" 
+                                               value="@(User.FindFirst("phoneNumber")?.Value ?? "")" placeholder="+1 (555) 123-4567">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-sm-6">
+                                    <div class="info-item">
+                                        <label class="form-label text-muted small">Member Since</label>
+                                        <p class="fw-medium">@(User.FindFirst("dateJoined")?.Value ?? "Not available")</p>
+                                        <small class="text-muted">Join date cannot be changed</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Address Information -->
+                            <div class="row g-3 mt-3">
+                                <div class="col-12">
+                                    <h5 class="text-muted border-bottom pb-2 mb-3">
+                                        <span class="material-symbols-outlined align-middle me-2">location_on</span>
+                                        Address Information
+                                    </h5>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <div class="info-item">
+                                        <label class="form-label text-muted small">Street Address</label>
+                                        <p class="fw-medium view-mode">@(User.FindFirst("address")?.Value ?? "Not provided")</p>
+                                        <input type="text" class="form-control edit-mode d-none" name="address" 
+                                               value="@(User.FindFirst("address")?.Value ?? "")" placeholder="123 Main Street">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-sm-4">
+                                    <div class="info-item">
+                                        <label class="form-label text-muted small">City</label>
+                                        <p class="fw-medium view-mode">@(User.FindFirst("city")?.Value ?? "Not provided")</p>
+                                        <input type="text" class="form-control edit-mode d-none" name="city" 
+                                               value="@(User.FindFirst("city")?.Value ?? "")" placeholder="New York">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-sm-4">
+                                    <div class="info-item">
+                                        <label class="form-label text-muted small">State</label>
+                                        <p class="fw-medium view-mode">@(User.FindFirst("state")?.Value ?? "Not provided")</p>
+                                        <input type="text" class="form-control edit-mode d-none" name="state" 
+                                               value="@(User.FindFirst("state")?.Value ?? "")" placeholder="NY">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-sm-4">
+                                    <div class="info-item">
+                                        <label class="form-label text-muted small">Country</label>
+                                        <p class="fw-medium view-mode">@(User.FindFirst("country")?.Value ?? "Not provided")</p>
+                                        <input type="text" class="form-control edit-mode d-none" name="country" 
+                                               value="@(User.FindFirst("country")?.Value ?? "")" placeholder="United States">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Hidden fields -->
+                            <input type="hidden" name="id" value="@(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "")" />
+                            <input type="hidden" name="email" value="@(User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "")" />
+                        </form>
+                    </div>
+
+                    <!-- Profile Actions -->
+                    <div class="card-footer bg-light border-0 p-4">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                            <button type="button" class="btn btn-primary px-4 view-mode" id="editButton" onclick="toggleEditMode()">
+                                <span class="material-symbols-outlined align-middle me-2" style="font-size: 18px;">edit</span>
+                                Edit Profile
+                            </button>
+                            <div class="edit-mode d-none">
+                                <button type="button" class="btn btn-success px-4 me-2" onclick="saveProfile()">
+                                    <span class="material-symbols-outlined align-middle me-2" style="font-size: 18px;">save</span>
+                                    Save Changes
+                                </button>
+                                <button type="button" class="btn btn-secondary px-4" onclick="cancelEdit()">
+                                    <span class="material-symbols-outlined align-middle me-2" style="font-size: 18px;">cancel</span>
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.profile-image {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+}
+
+.info-item {
+    margin-bottom: 1rem;
+}
+
+.info-item label {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.info-item p {
+    margin-bottom: 0;
+    color: #495057;
+}
+
+.card {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.card-header {
+    background: linear-gradient(135deg, #dfdfdf 0%, #016626 100%) !important;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.edit-mode input.form-control {
+    border: 2px solid #007bff;
+    border-radius: 8px;
+}
+
+.edit-mode input.form-control:focus {
+    border-color: #0056b3;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+@@media (max-width: 576px) {
+    .profile-image {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .card-header h3 {
+        font-size: 1.5rem;
+    }
+}
+</style>
+
+<script>
+function toggleEditMode() {
+    const viewModeElements = document.querySelectorAll('.view-mode');
+    const editModeElements = document.querySelectorAll('.edit-mode');
+    
+    viewModeElements.forEach(el => el.classList.add('d-none'));
+    editModeElements.forEach(el => el.classList.remove('d-none'));
+}
+
+function cancelEdit() {
+    const viewModeElements = document.querySelectorAll('.view-mode');
+    const editModeElements = document.querySelectorAll('.edit-mode');
+    
+    editModeElements.forEach(el => el.classList.add('d-none'));
+    viewModeElements.forEach(el => el.classList.remove('d-none'));
+    
+    // Reset form to original values
+    document.getElementById('profileForm').reset();
+}
+
+function saveProfile() {
+    const form = document.getElementById('profileForm');
+    const formData = new FormData(form);
+    
+    // Add profile picture if selected
+    const profileImageInput = document.getElementById('profileImageInput');
+    if (profileImageInput.files.length > 0) {
+        formData.append('profilePicture', profileImageInput.files[0]);
+    }
+    
+    // Show loading state
+    const saveButton = event.target;
+    const originalText = saveButton.innerHTML;
+    saveButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
+    saveButton.disabled = true;
+    
+    fetch(form.action, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            // Reload page to show updated data
+            window.location.reload();
+        } else {
+            throw new Error('Failed to save profile');
+        }
+    })
+    .catch(error => {
+        alert('Error saving profile: ' + error.message);
+        saveButton.innerHTML = originalText;
+        saveButton.disabled = false;
+    });
+}
+
+document.getElementById('profileImageInput').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('profileImagePreview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+</script>
