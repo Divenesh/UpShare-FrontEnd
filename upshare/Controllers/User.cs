@@ -106,5 +106,10 @@ namespace upshare.Controllers
 
             return View("UserDetailsRegistration", model);
         }
+
+        public IActionResult ProfilePage()
+        {
+            return View();
+        }
     }
 }
