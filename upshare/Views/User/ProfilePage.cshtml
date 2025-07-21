@@ -32,7 +32,7 @@
                                      alt="Profile Picture" 
                                      class="profile-image rounded-circle border border-3 border-white shadow"
                                      onerror="this.src='/assets/images/default-avatar.png'"
-                                     id="profileImagePreview">
+                                     id="profile-preview">
                                 <div class="edit-mode d-none">
                                     <input type="file" id="profile-upload" name="profilePicture" class="d-none" accept="image/*">
                                     <button type="button" class="btn btn-sm btn-light rounded-circle position-absolute bottom-0 end-0" 
@@ -193,95 +193,5 @@
 </section>
 
 <style>
-.profile-image {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-}
-.info-item {
-    margin-bottom: 1rem;
-}
-
-.info-item label {
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-}
-
-.info-item p {
-    margin-bottom: 0;
-    color: #495057;
-}
-
-.profile-card {
-    backdrop-filter: blur(10px);
-    background: rgba(255, 255, 255, 0.95);
-}
-
-.profile-card-header {
-    background: linear-gradient(135deg, #dfdfdf 0%, #016626 100%) !important;
-}
-
-.profile-card-footer {
-    background: rgb(255, 255, 255);
-    --bs-bg-opacity: 0 !important;
-}
-
-.material-symbols-outlined {
-    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-}
-
-.edit-mode input.form-control {
-    border: 2px solid #007bff;
-}
-
-.edit-mode input.form-control:focus {
-    border-color: #023367;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
 
 </style>
-
-<script>
-function toggleEditMode() {
-    const viewModeElements = document.querySelectorAll('.view-mode');
-    const editModeElements = document.querySelectorAll('.edit-mode');
-    console.log("Edit mode activated, reverting to view mode.");
-
-    viewModeElements.forEach(el => el.classList.add('d-none'));
-    editModeElements.forEach(el => el.classList.remove('d-none'));
-}
-
-function cancelEdit() {
-    const viewModeElements = document.querySelectorAll('.view-mode');
-    const editModeElements = document.querySelectorAll('.edit-mode');
-    
-    editModeElements.forEach(el => el.classList.add('d-none'));
-    viewModeElements.forEach(el => el.classList.remove('d-none'));
-    console.log("Edit cancelled, reverting to view mode.");
-    
-    document.getElementById('profileForm').reset();
-    
-    const originalSrc = '@imageUrl';
-    document.getElementById('profileImagePreview').src = originalSrc;
-}
-
-// Handle profile image preview
-document.getElementById('profile-upload').addEventListener('change', function (e) {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function (event) {
-            document.getElementById('profileImagePreview').src = event.target.result;
-        }
-        reader.readAsDataURL(file);
-    }
-});
-
-document.getElementById('profileForm').addEventListener('submit', function(e) {
-    const saveButton = document.getElementById('saveButton');
-    const originalText = saveButton.innerHTML;
-    
-    saveButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
-    saveButton.disabled = true;
-});
-</script>
