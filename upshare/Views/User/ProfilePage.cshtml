@@ -1,4 +1,7 @@
-﻿@{
+﻿@model upshare.Models.User.UserDetailsModel
+@using System.Security.Claims
+
+@{
     ViewBag.Title = "Profile Page";
     ViewData["Title"] = "Profile";
 }
@@ -8,9 +11,9 @@
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-12">
                 <!-- Profile Card -->
-                <div class="card shadow-lg border-0 rounded-3">
+                <div class="card profile-card shadow-lg border-0 rounded-3">
                     <!-- Profile Header -->
-                    <div class="card-header bg-primary text-white text-center py-4">
+                    <div class="profile-card-header bg-primary text-white text-center py-4">
                         <div class="profile-image-container mb-3">
                             @{
                                 var profileUrl = User.FindFirst("profilePicture")?.Value;
@@ -29,11 +32,11 @@
                                      alt="Profile Picture" 
                                      class="profile-image rounded-circle border border-3 border-white shadow"
                                      onerror="this.src='/assets/images/default-avatar.png'"
-                                     id="profileImagePreview">
+                                     id="profile-preview">
                                 <div class="edit-mode d-none">
-                                    <input type="file" id="profileImageInput" class="d-none" accept="image/*">
+                                    <input type="file" id="profile-upload" name="profilePicture" class="d-none" accept="image/*">
                                     <button type="button" class="btn btn-sm btn-light rounded-circle position-absolute bottom-0 end-0" 
-                                            onclick="document.getElementById('profileImageInput').click()">
+                                            onclick="document.getElementById('profile-upload').click()">
                                         <span class="material-symbols-outlined" style="font-size: 16px;">camera_alt</span>
                                     </button>
                                 </div>
@@ -47,8 +50,7 @@
 
                     <!-- Profile Body -->
                     <div class="card-body p-4">
-                        <form id="profileForm" asp-action="UpdateProfile" asp-controller="User" method="post" enctype="multipart/form-data">
-                            <!-- User Information -->
+                        <form id="profileForm" asp-action="SaveUserDetails" asp-controller="User" method="post" enctype="multipart/form-data">
                             <div class="row g-2">
                                 <div class="col-12">
                                     <h5 class="text-muted border-bottom pb-2 mb-3">
@@ -61,8 +63,9 @@
                                     <div class="info-item">
                                         <label class="form-label text-muted small">First Name</label>
                                         <p class="fw-medium view-mode">@(User.FindFirst("firstName")?.Value ?? "Not provided")</p>
-                                        <input type="text" class="form-control edit-mode d-none" name="firstName" 
-                                               value="@(User.FindFirst("firstName")?.Value ?? "")" required>
+                                        <input asp-for="firstname" class="form-control edit-mode d-none" name="firstname" 
+                                               value="@(User.FindFirst("firstName")?.Value ?? "")">
+                                        <span asp-validation-for="firstname" class="text-danger"></span>
                                     </div>
                                 </div>
                                 
@@ -70,8 +73,9 @@
                                     <div class="info-item">
                                         <label class="form-label text-muted small">Last Name</label>
                                         <p class="fw-medium view-mode">@(User.FindFirst("lastName")?.Value ?? "Not provided")</p>
-                                        <input type="text" class="form-control edit-mode d-none" name="lastName" 
-                                               value="@(User.FindFirst("lastName")?.Value ?? "")" required>
+                                        <input asp-for="lastname" class="form-control edit-mode d-none" name="lastname" 
+                                               value="@(User.FindFirst("lastName")?.Value ?? "")">
+                                        <span asp-validation-for="lastname" class="text-danger"></span>
                                     </div>
                                 </div>
                                 
@@ -79,7 +83,9 @@
                                     <div class="info-item">
                                         <label class="form-label text-muted small">Email Address</label>
                                         <p class="fw-medium">@(User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "Not provided")</p>
+                                        <div class="edit-mode d-none">
                                         <small class="text-muted">Email cannot be changed</small>
+                                        </div>
                                     </div>
                                 </div>
                                 
@@ -87,8 +93,9 @@
                                     <div class="info-item">
                                         <label class="form-label text-muted small">Phone Number</label>
                                         <p class="fw-medium view-mode">@(User.FindFirst("phoneNumber")?.Value ?? "Not provided")</p>
-                                        <input type="tel" class="form-control edit-mode d-none" name="phoneNumber" 
+                                        <input asp-for="phoneNumber" class="form-control edit-mode d-none" name="phoneNumber" 
                                                value="@(User.FindFirst("phoneNumber")?.Value ?? "")" placeholder="+1 (555) 123-4567">
+                                        <span asp-validation-for="phoneNumber" class="text-danger"></span>
                                     </div>
                                 </div>
                                 
@@ -96,7 +103,9 @@
                                     <div class="info-item">
                                         <label class="form-label text-muted small">Member Since</label>
                                         <p class="fw-medium">@(User.FindFirst("dateJoined")?.Value ?? "Not available")</p>
+                                        <div class="edit-mode d-none">
                                         <small class="text-muted">Join date cannot be changed</small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -114,8 +123,9 @@
                                     <div class="info-item">
                                         <label class="form-label text-muted small">Street Address</label>
                                         <p class="fw-medium view-mode">@(User.FindFirst("address")?.Value ?? "Not provided")</p>
-                                        <input type="text" class="form-control edit-mode d-none" name="address" 
+                                        <input asp-for="address" class="form-control edit-mode d-none" name="address" 
                                                value="@(User.FindFirst("address")?.Value ?? "")" placeholder="123 Main Street">
+                                        <span asp-validation-for="address" class="text-danger"></span>
                                     </div>
                                 </div>
                                 
@@ -123,8 +133,9 @@
                                     <div class="info-item">
                                         <label class="form-label text-muted small">City</label>
                                         <p class="fw-medium view-mode">@(User.FindFirst("city")?.Value ?? "Not provided")</p>
-                                        <input type="text" class="form-control edit-mode d-none" name="city" 
+                                        <input asp-for="city" class="form-control edit-mode d-none" name="city" 
                                                value="@(User.FindFirst("city")?.Value ?? "")" placeholder="New York">
+                                        <span asp-validation-for="city" class="text-danger"></span>
                                     </div>
                                 </div>
                                 
@@ -132,8 +143,9 @@
                                     <div class="info-item">
                                         <label class="form-label text-muted small">State</label>
                                         <p class="fw-medium view-mode">@(User.FindFirst("state")?.Value ?? "Not provided")</p>
-                                        <input type="text" class="form-control edit-mode d-none" name="state" 
+                                        <input asp-for="state" class="form-control edit-mode d-none" name="state" 
                                                value="@(User.FindFirst("state")?.Value ?? "")" placeholder="NY">
+                                        <span asp-validation-for="state" class="text-danger"></span>
                                     </div>
                                 </div>
                                 
@@ -141,8 +153,9 @@
                                     <div class="info-item">
                                         <label class="form-label text-muted small">Country</label>
                                         <p class="fw-medium view-mode">@(User.FindFirst("country")?.Value ?? "Not provided")</p>
-                                        <input type="text" class="form-control edit-mode d-none" name="country" 
+                                        <input asp-for="country" class="form-control edit-mode d-none" name="country" 
                                                value="@(User.FindFirst("country")?.Value ?? "")" placeholder="United States">
+                                        <span asp-validation-for="country" class="text-danger"></span>
                                     </div>
                                 </div>
                             </div>
@@ -150,27 +163,28 @@
                             <!-- Hidden fields -->
                             <input type="hidden" name="id" value="@(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "")" />
                             <input type="hidden" name="email" value="@(User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "")" />
-                        </form>
-                    </div>
+                            <input type="hidden" name="dateJoined" value="@(User.FindFirst("dateJoined")?.Value ?? DateTime.Now.ToString("yyyy-MM-dd"))" />
 
-                    <!-- Profile Actions -->
-                    <div class="card-footer bg-light border-0 p-4">
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                            <button type="button" class="btn btn-primary px-4 view-mode" id="editButton" onclick="toggleEditMode()">
-                                <span class="material-symbols-outlined align-middle me-2" style="font-size: 18px;">edit</span>
-                                Edit Profile
-                            </button>
-                            <div class="edit-mode d-none">
-                                <button type="button" class="btn btn-success px-4 me-2" onclick="saveProfile()">
-                                    <span class="material-symbols-outlined align-middle me-2" style="font-size: 18px;">save</span>
-                                    Save Changes
-                                </button>
-                                <button type="button" class="btn btn-secondary px-4" onclick="cancelEdit()">
-                                    <span class="material-symbols-outlined align-middle me-2" style="font-size: 18px;">cancel</span>
-                                    Cancel
-                                </button>
+                            <!-- Profile Actions - Moved inside form -->
+                            <div class="card-footer profile-card-footer bg-light border-0 p-4 mt-4">
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                    <button type="button" class="btn btn-success px-4 view-mode" id="editButton" onclick="toggleEditMode()">
+                                        <span class="material-symbols-outlined align-middle me-2" style="font-size: 18px;">edit</span>
+                                        Edit Profile
+                                    </button>
+                                    <div class="edit-mode d-none">
+                                        <button type="submit" class="btn btn-success px-4 me-2" id="saveButton">
+                                            <span class="material-symbols-outlined align-middle me-2" style="font-size: 18px;">save</span>
+                                            Save Changes
+                                        </button>
+                                        <button type="button" class="btn btn-secondary px-4" onclick="cancelEdit()">
+                                            <span class="material-symbols-outlined align-middle me-2" style="font-size: 18px;">cancel</span>
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -179,124 +193,5 @@
 </section>
 
 <style>
-.profile-image {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-}
 
-.info-item {
-    margin-bottom: 1rem;
-}
-
-.info-item label {
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-}
-
-.info-item p {
-    margin-bottom: 0;
-    color: #495057;
-}
-
-.card {
-    backdrop-filter: blur(10px);
-    background: rgba(255, 255, 255, 0.95);
-}
-
-.card-header {
-    background: linear-gradient(135deg, #dfdfdf 0%, #016626 100%) !important;
-}
-
-.material-symbols-outlined {
-    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-}
-
-.edit-mode input.form-control {
-    border: 2px solid #007bff;
-    border-radius: 8px;
-}
-
-.edit-mode input.form-control:focus {
-    border-color: #0056b3;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
-
-@@media (max-width: 576px) {
-    .profile-image {
-        width: 100px;
-        height: 100px;
-    }
-    
-    .card-header h3 {
-        font-size: 1.5rem;
-    }
-}
 </style>
-
-<script>
-function toggleEditMode() {
-    const viewModeElements = document.querySelectorAll('.view-mode');
-    const editModeElements = document.querySelectorAll('.edit-mode');
-    
-    viewModeElements.forEach(el => el.classList.add('d-none'));
-    editModeElements.forEach(el => el.classList.remove('d-none'));
-}
-
-function cancelEdit() {
-    const viewModeElements = document.querySelectorAll('.view-mode');
-    const editModeElements = document.querySelectorAll('.edit-mode');
-    
-    editModeElements.forEach(el => el.classList.add('d-none'));
-    viewModeElements.forEach(el => el.classList.remove('d-none'));
-    
-    // Reset form to original values
-    document.getElementById('profileForm').reset();
-}
-
-function saveProfile() {
-    const form = document.getElementById('profileForm');
-    const formData = new FormData(form);
-    
-    // Add profile picture if selected
-    const profileImageInput = document.getElementById('profileImageInput');
-    if (profileImageInput.files.length > 0) {
-        formData.append('profilePicture', profileImageInput.files[0]);
-    }
-    
-    // Show loading state
-    const saveButton = event.target;
-    const originalText = saveButton.innerHTML;
-    saveButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
-    saveButton.disabled = true;
-    
-    fetch(form.action, {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
-        if (response.ok) {
-            // Reload page to show updated data
-            window.location.reload();
-        } else {
-            throw new Error('Failed to save profile');
-        }
-    })
-    .catch(error => {
-        alert('Error saving profile: ' + error.message);
-        saveButton.innerHTML = originalText;
-        saveButton.disabled = false;
-    });
-}
-
-document.getElementById('profileImageInput').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('profileImagePreview').src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-});
-</script>
