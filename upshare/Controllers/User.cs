@@ -69,17 +69,20 @@ namespace upshare.Controllers
             }
         }
 
-        public async Task<IActionResult> SaveUserDetails(Models.User.UserDetailsModel model)
+        public async Task<IActionResult> SaveUserDetails(
+            Models.User.UserDetailsModel model,
+            string mode
+        )
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             model.id = userId;
 
             Console.WriteLine("Saving user details...");
+            Console.WriteLine($"Mode: {mode}");
 
             Console.WriteLine("Model state is valid, proceeding to save user details...");
             try
             {
-                // Debug information
                 var files = HttpContext.Request.Form.Files;
                 Console.WriteLine($"Files received: {files.Count}");
                 foreach (var file in files)
@@ -87,16 +90,34 @@ namespace upshare.Controllers
                     Console.WriteLine($"File name: {file.FileName}, Size: {file.Length}");
                 }
                 Console.WriteLine($"Model profile picture is null: {model.profilePicture == null}");
-
-                var result = await Models.User.GetUser.SaveUser(model);
-
-                if (result)
+                if (mode == "create")
                 {
-                    return RedirectToAction("GetUser", "User");
+                    var result = await Models.User.GetUser.SaveUser(model, mode);
+
+                    if (result)
+                    {
+                        return RedirectToAction("GetUser", "User");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Failed to save user details.");
+                    }
+                }
+                else if (mode == "update")
+                {
+                    var result = await Models.User.GetUser.SaveUser(model, mode);
+                    if (result)
+                    {
+                        return RedirectToAction("GetUser", "User");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Failed to save user details.");
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Failed to save user details.");
+                    ModelState.AddModelError("", "Invalid mode specified.");
                 }
             }
             catch (Exception ex)

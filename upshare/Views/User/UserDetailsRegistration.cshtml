@@ -15,8 +15,7 @@
                         <p class="text-center text-muted mb-4">Please provide your details to complete your UpShare
                             profile</p>
 
-                        
-                        <form asp-action="SaveUserDetails" asp-controller="User" method="post" enctype="multipart/form-data">
+                        <form id="registrationForm" asp-action="SaveUserDetails" asp-route-mode="create" asp-controller="User" method="post" enctype="multipart/form-data">
                             <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
                             <div class="row mb-3">
                                 <div class="col-md-6 mb-3 mb-md-0">
@@ -50,7 +49,7 @@
                                         <div class="rounded-circle bg-light d-flex justify-content-center align-items-center"
                                             style="width: 100px; height: 100px; overflow: hidden;">
                                             <img id="profile-preview" src="/assets/images/profile-placeholder.png"
-                                                class="img-fluid" alt="Profile Picture">
+                                                class="img-fluid" alt="Profile Picture" style="width: 100%; height: 100%; object-fit: cover;">
                                         </div>
                                     </div>
                                     <div class="flex-grow-1">
@@ -60,7 +59,7 @@
                                                 <span class="material-symbols-outlined">refresh</span>
                                             </button>
                                         </div>
-                                        <div class="form-text">Upload a square image for best results. Max size 2MB.</div>
+                                        <div class="form-text">Upload a square image for best results. Max size 5MB.</div>
                                     </div>
                                 </div>
                             </div>
@@ -108,7 +107,7 @@
                             </div>
 
                             <div class="d-grid gap-2 mt-4">
-                                <button type="submit" class="btn btn-success btn-lg">
+                                <button type="submit" class="btn btn-success btn-lg" id="saveProfileBtn">
                                     <span class="material-symbols-outlined align-middle me-2">check_circle</span>
                                     Save Profile
                                 </button>
@@ -120,3 +119,114 @@
         </div>
     </div>
 </section>
+
+<style>
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.form-control:focus {
+    border-color: #198754;
+    box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+}
+
+.btn-success {
+    background-color: #198754;
+    border-color: #198754;
+}
+
+.btn-success:hover {
+    background-color: #157347;
+    border-color: #146c43;
+}
+</style>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    const profileImageInput = document.getElementById('profile-upload');
+    const profileImagePreview = document.getElementById('profile-preview');
+    const resetButton = document.getElementById('reset-profile-btn');
+    const form = document.getElementById('registrationForm');
+    const saveButton = document.getElementById('saveProfileBtn');
+    
+    // Profile image upload and preview
+    if (profileImageInput && profileImagePreview) {
+        profileImageInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            console.log('File selected:', file); // Debug log
+            if (file) {
+                // Validate file type
+                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Please select a valid image file (JPEG, PNG, or GIF)');
+                    this.value = '';
+                    return;
+                }
+                
+                // Validate file size (5MB max)
+                const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+                if (file.size > maxSize) {
+                    alert('File size must be less than 5MB');
+                    this.value = '';
+                    return;
+                }
+                
+                // Show preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profileImagePreview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+    
+    // Reset profile picture
+    if (resetButton) {
+        resetButton.addEventListener('click', function() {
+            profileImageInput.value = '';
+            profileImagePreview.src = '/assets/images/profile-placeholder.png';
+        });
+    }
+
+    if (form && saveButton) {
+        form.addEventListener('submit', function(e) {
+            const originalText = saveButton.innerHTML;
+            
+            // Debug log to check form data
+            const formData = new FormData(this);
+            console.log('Form data entries:');
+            for (let [key, value] of formData.entries()) {
+                console.log(key + ':', value);
+            }
+            
+            // Validate required fields
+            const firstName = document.querySelector('input[name="firstname"]');
+            const lastName = document.querySelector('input[name="lastname"]');
+            
+            if (firstName && firstName.value.trim() === '') {
+                e.preventDefault();
+                alert('First name is required');
+                return;
+            }
+            
+            if (lastName && lastName.value.trim() === '') {
+                e.preventDefault();
+                alert('Last name is required');
+                return;
+            }
+            
+            // Show loading state
+            saveButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving Profile...';
+            saveButton.disabled = true;
+            
+            // If validation fails, reset button
+            if (e.defaultPrevented) {
+                saveButton.innerHTML = originalText;
+                saveButton.disabled = false;
+            }
+        });
+    }
+});
+</script>
