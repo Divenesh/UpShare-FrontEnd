@@ -61,10 +61,11 @@ public class GetUser
         }
     }
 
-    public static async Task<bool> SaveUser(UserDetailsModel model)
+    public static async Task<bool> SaveUser(UserDetailsModel model, string mode)
     {
         var locationUrl = $"http://localhost:5000/user/";
         var fileContent = new ByteArrayContent(Array.Empty<byte>());
+        HttpResponseMessage response;
 
         using HttpClient client = new();
         try
@@ -84,7 +85,6 @@ public class GetUser
 
                 Console.WriteLine($"File {model.profilePicture.FileName} added to request.");
             }
-
             content.Add(new StringContent(model.id), "id");
             content.Add(new StringContent(model.email), "email");
             content.Add(new StringContent(model.dateJoined.ToString()), "dateJoined");
@@ -101,11 +101,14 @@ public class GetUser
             content.Add(new StringContent(model.state), "state");
             content.Add(new StringContent(model.country ?? string.Empty), "country");
 
-            HttpResponseMessage response = await client.PostAsync(locationUrl, content);
-
-            Console.WriteLine(
-                $"Response: {response.RequestMessage?.Method} {response.RequestMessage?.RequestUri}"
-            );
+            if (mode == "create")
+            {
+                response = await client.PostAsync(locationUrl, content);
+            }
+            else
+            {
+                response = await client.PutAsync(locationUrl, content);
+            }
 
             if (response.IsSuccessStatusCode)
             {
